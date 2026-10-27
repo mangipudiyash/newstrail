@@ -1,0 +1,15 @@
+{
+  "name": "newstrail",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Watch the news travel: where a story started, how it spread, and how every outlet framed it.",
+  "type": "module",
+  "scripts": {
+    "collect": "node scripts/collect.mjs",
+    "build": "node scripts/build.mjs",
+    "update": "node scripts/collect.mjs && node scripts/build.mjs",
+    "serve": "python3 -m http.server 8877 --directory site"
+  },
+  "engines": { "node": ">=20" },
+  "license": "MIT"
+}
