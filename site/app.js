@@ -231,6 +231,9 @@ async function compare() {
       </div>
       <div class="panel"><h4>Where Indian newsrooms look abroad</h4><div class="bars lb">${IN.top.map((t, k) => `<div class="r" style="--k:${k}"><span>${esc(t.c)}</span><div class="t"><i style="--w:${t.share / Math.max(1, IN.top[0]?.share || 1) * 100}%;--c:#9B8CFF"></i></div><span>${t.share}%</span></div>`).join("")}</div></div>
     </div>
+    ${c.regions ? `<div class="panel" style="margin-top:20px"><h4>This week's hot zones — where ${c.regions[0].newsrooms} newsrooms pointed (each newsroom weighted equally)</h4>
+      <div class="bars lb">${c.regions.map((r, k) => `<div class="r" style="--k:${k}"><span>${esc(r.region)}</span><div class="t"><i style="--w:${r.share / c.regions[0].share * 100}%;--c:#FF5A4E"></i></div><span>${r.share}%</span></div>`).join("")}</div>
+      <p class="note">Hottest: ${c.regions.slice(0, 3).map(r => `${esc(r.region)} (${r.countries.slice(0, 2).map(x => esc(x.c)).join(", ")})`).join(" · ")}.</p></div>` : ""}
     <div class="panel" style="margin-top:20px"><h4>Who covers whom — % of each country's foreign coverage</h4>
       <div class="heatwrap"><table class="heat"><thead><tr><th>Newsrooms in ↓ · about →</th>${c.matrix.cols.map(x => `<th>${esc(x)}</th>`).join("")}</tr></thead>
       <tbody>${c.matrix.rows.map(r => `<tr><th>${esc(r.country)} <small>${r.abroad}</small></th>${r.cells.map(v => `<td style="${heat(v)}">${v == null ? "—" : v || ""}</td>`).join("")}</tr>`).join("")}</tbody></table></div>
