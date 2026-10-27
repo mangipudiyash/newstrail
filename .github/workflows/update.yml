@@ -1,0 +1,54 @@
+name: Update NewsTrail
+
+on:
+  schedule:
+    - cron: "23 * * * *"      # every hour
+  workflow_dispatch:          # "Run workflow" button
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # keep the rolling 7-day headline history between runs, so a story's first report is never forgotten
+      - name: Restore history
+        uses: actions/cache/restore@v4
+        with:
+          path: site/data/items.json
+          key: newstrail-items-${{ github.run_id }}
+          restore-keys: newstrail-items-
+
+      - name: Collect headlines
+        run: node scripts/collect.mjs
+      - name: Build stories and patterns
+        run: node scripts/build.mjs
+
+      - name: Save history
+        uses: actions/cache/save@v4
+        with:
+          path: site/data/items.json
+          key: newstrail-items-${{ github.run_id }}
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - id: deploy
+        uses: actions/deploy-pages@v4
