@@ -205,6 +205,46 @@ async function patterns() {
   </div></section>`;
 }
 
+// ── home vs world ────────────────────────────────────────────────────────────────────────────────
+async function compare() {
+  const c = await get("compare.json");
+  const span = `${new Date(c.from).toLocaleDateString([], { day: "numeric", month: "short" })} – ${new Date(c.to).toLocaleDateString([], { day: "numeric", month: "short" })}`;
+  const IN = c.countries.find(x => x.country === "India") || { top: [], abroad: 0 };
+  const us = c.mirror.find(m => m.country === "United States");
+  const mx = Math.max(1, ...c.mirror.flatMap(m => [m.indiaAboutThem, m.themAboutIndia]));
+  const heat = v => v == null ? "" : `background:rgba(255,181,71,${Math.min(.9, v / 50)})`;
+  const ex = (list, empty) => list.length ? list.map(e => `<a class="tr" href="#/s/${e.id}"><span class="lag">${e.outlets} outlets</span><span class="ob">${e.countries.length} ${e.countries.length > 1 ? "countries" : "country"}</span><span class="h"><b>${esc(e.headline)}</b></span></a>`).join("") : `<p class="note">${empty}</p>`;
+  app.innerHTML = `<section><div class="wrap">
+    <div class="sh"><h2>Home vs world</h2><p>When each country's newsrooms look abroad, where do they look? ${span} · ${c.items.toLocaleString()} headlines.</p></div>
+    <div class="kpis">
+      ${us ? `<div class="kpi"><b>${us.indiaAboutThem}%</b><span>of Indian newsrooms' foreign coverage is about the United States</span></div>
+      <div class="kpi"><b>${us.themAboutIndia}%</b><span>of US newsrooms' foreign coverage is about India</span></div>` : ""}
+      <div class="kpi"><b>${c.aboutIndia.carriedAbroad} of ${c.aboutIndia.stories}</b><span>traced stories about India were picked up by a newsroom outside India</span></div>
+      <div class="kpi"><b>${c.aboutElsewhereInIndia.carriedInIndia} of ${c.aboutElsewhereInIndia.stories}</b><span>traced stories about other countries were carried by Indian newsrooms</span></div>
+    </div>
+    <div class="two">
+      <div class="panel"><h4>The mirror: India about them vs them about India</h4>
+        <div class="mirror">${c.mirror.sort((a, b) => b.indiaAboutThem + b.themAboutIndia - a.indiaAboutThem - a.themAboutIndia).map((m, k) => `<div class="mr" style="--k:${k}">
+          <span class="l"><i style="--w:${m.indiaAboutThem / mx * 100}%"></i><em>${m.indiaAboutThem}%</em></span><b>${esc(m.country)}</b><span class="r"><i style="--w:${m.themAboutIndia / mx * 100}%"></i><em>${m.themAboutIndia}%</em></span></div>`).join("")}</div>
+        <div class="mlegend"><span>← India's newsrooms about them</span><span>their newsrooms about India →</span></div>
+        <p class="note">Share of each side's <i>foreign</i> coverage, so it doesn't depend on how many home vs world headlines a feed carries.</p>
+      </div>
+      <div class="panel"><h4>Where Indian newsrooms look abroad</h4><div class="bars lb">${IN.top.map((t, k) => `<div class="r" style="--k:${k}"><span>${esc(t.c)}</span><div class="t"><i style="--w:${t.share / Math.max(1, IN.top[0]?.share || 1) * 100}%;--c:#9B8CFF"></i></div><span>${t.share}%</span></div>`).join("")}</div></div>
+    </div>
+    <div class="panel" style="margin-top:20px"><h4>Who covers whom — % of each country's foreign coverage</h4>
+      <div class="heatwrap"><table class="heat"><thead><tr><th>Newsrooms in ↓ · about →</th>${c.matrix.cols.map(x => `<th>${esc(x)}</th>`).join("")}</tr></thead>
+      <tbody>${c.matrix.rows.map(r => `<tr><th>${esc(r.country)} <small>${r.abroad}</small></th>${r.cells.map(v => `<td style="${heat(v)}">${v == null ? "—" : v || ""}</td>`).join("")}</tr>`).join("")}</tbody></table></div>
+    </div>
+    <div class="panel" style="margin-top:20px"><h4>Each newsroom at a glance</h4>
+      <div class="heatwrap"><table class="heat out"><thead><tr><th>Outlet</th><th>Headlines</th><th>Name a country</th><th>About abroad</th><th>Top foreign focus</th></tr></thead>
+      <tbody>${c.outlets.sort((a, b) => a.country.localeCompare(b.country) || b.n - a.n).map(o => `<tr><th>${ob(o.id)} <small>${esc(o.country)}</small></th><td>${o.n}</td><td>${o.placed}</td><td>${o.abroadShare}%</td><td class="tl">${o.top.slice(0, 3).map(t => `${esc(t.c)} ${t.share}%`).join(" · ")}</td></tr>`).join("")}</tbody></table></div>
+    </div>
+    <section><div class="sh"><h2>Stories about India that travelled</h2></div><div class="trail">${ex(c.examples.indiaToWorld, "None this week.")}</div></section>
+    <section><div class="sh"><h2>Stories about India that stayed in India</h2></div><div class="trail">${ex(c.examples.indiaOnly, "None this week.")}</div></section>
+    <p class="note">How countries are detected: headlines are matched against an open list of country names, demonyms, capitals and major places (scripts/countries.mjs). Headlines that name no country are left out of the shares. Samples from some international outlets are small in a single week — read their numbers as indicative.</p>
+  </div></section>`;
+}
+
 // ── method ────────────────────────────────────────────────────────────────────────────────────
 function about() {
   app.innerHTML = `<section><div class="wrap prose">
@@ -225,10 +265,11 @@ function about() {
 async function route() {
   heroStop(); scrollTo(0, 0); document.title = "NewsTrail — watch the news travel";
   const h = location.hash.slice(1) || "/";
-  document.querySelectorAll("nav a").forEach(a => a.classList.toggle("on", a.dataset.r === (h.startsWith("/patterns") ? "patterns" : h.startsWith("/about") ? "about" : "home")));
+  document.querySelectorAll("nav a").forEach(a => a.classList.toggle("on", a.dataset.r === (h.startsWith("/patterns") ? "patterns" : h.startsWith("/compare") ? "compare" : h.startsWith("/about") ? "about" : "home")));
   try {
     if (h.startsWith("/s/")) await story(h.slice(3));
     else if (h.startsWith("/patterns")) await patterns();
+    else if (h.startsWith("/compare")) await compare();
     else if (h.startsWith("/about")) about();
     else await home();
   } catch (e) { console.error(e); app.innerHTML = `<div class="wrap empty">That story has moved on — it's no longer in the 7-day window. <a href="#/">See what's spreading now →</a></div>`; }
