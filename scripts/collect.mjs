@@ -47,27 +47,30 @@ const items = new Map(old.map(i => [i.id, i]));
 const report = [];
 
 // a few feeds at a time — polite, and fast enough
-const jobs = OUTLETS.flatMap(o => o.feeds.map(url => ({ o, url })));
+const jobs = OUTLETS.flatMap(o => Object.entries(o.feeds).flatMap(([sec, urls]) => urls.map(url => ({ o, sec, url }))));
 for (let k = 0; k < jobs.length; k += 6) {
-  await Promise.all(jobs.slice(k, k + 6).map(async ({ o, url }) => {
+  await Promise.all(jobs.slice(k, k + 6).map(async ({ o, sec, url }) => {
     try {
-      const got = parse(await grab(url));
+      // keep only headlines that link to the outlet's own site (some old feeds fill up with ads and syndicated junk)
+      const brand = new URL(o.page).hostname.split(".").filter(p => !["www", "news", "edition"].includes(p))[0];
+      const got = parse(await grab(url)).filter(g => { try { return new URL(g.link).hostname.split(".").includes(brand); } catch { return false; } });
       let fresh = 0;
       for (const g of got) {
         const id = createHash("sha1").update(g.link.replace(/[?#].*$/, "")).digest("hex").slice(0, 12);
         const pub = Date.parse(g.date);
         const t = Number.isFinite(pub) && pub <= now + 5 * 60e3 ? pub : now;      // trust the feed's time unless missing or in the future
-        if (items.has(id)) { const it = items.get(id); it.title = g.title; it.summary = g.summary || it.summary; continue; }
-        items.set(id, { id, outlet: o.id, title: g.title, summary: g.summary, link: g.link, t, seen: now });
+        if (items.has(id)) { const it = items.get(id); it.title = g.title; it.summary = g.summary || it.summary; it.sec ??= sec; continue; }
+        items.set(id, { id, outlet: o.id, sec, title: g.title, summary: g.summary, link: g.link, t, seen: now });
         fresh++;
       }
-      report.push(`${o.name.padEnd(26)} ${String(got.length).padStart(4)} items, ${fresh} new`);
-    } catch (e) { report.push(`${o.name.padEnd(26)} skipped (${e.message})`); }
+      report.push(`${(o.name + " · " + sec).padEnd(32)} ${String(got.length).padStart(4)} items, ${fresh} new`);
+    } catch (e) { report.push(`${(o.name + " · " + sec).padEnd(32)} skipped (${e.message})`); }
   }));
 }
 
 const cutoff = now - KEEP_DAYS * 864e5;
-const out = [...items.values()].filter(i => i.t >= cutoff).sort((a, b) => a.t - b.t);
+const known = new Set(OUTLETS.map(o => o.id));
+const out = [...items.values()].filter(i => i.t >= cutoff && known.has(i.outlet)).sort((a, b) => a.t - b.t);
 await writeFile(new URL("items.json", DATA), JSON.stringify({ updated: now, items: out }));
 console.log(report.sort().join("\n"));
 console.log(`\n${out.length} items in the ${KEEP_DAYS}-day window`);

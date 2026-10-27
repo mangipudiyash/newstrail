@@ -5,9 +5,11 @@ import { readFile, writeFile, mkdir, rm } from "node:fs/promises";
 import { createHash } from "node:crypto";
 import { OUTLETS, byId } from "./outlets.mjs";
 import { placesFor } from "./places.mjs";
+import { countriesIn } from "./countries.mjs";
 
 const DATA = new URL("../site/data/", import.meta.url);
-const { items, updated } = JSON.parse(await readFile(new URL("items.json", DATA), "utf8"));
+const raw = JSON.parse(await readFile(new URL("items.json", DATA), "utf8")), updated = raw.updated;
+const items = raw.items.filter(i => byId[i.outlet]);
 const H = 3600e3;
 
 // ── text → weighted terms ───────────────────────────────────────────────────────────────
@@ -53,6 +55,48 @@ for (const d of docs) {                                                         
   const k = best.docs.length;                                                   // running mean centroid
   for (const [w, x] of best.centroid) best.centroid.set(w, x * (k - 1) / k);
   for (const [w, x] of d.v) best.centroid.set(w, (best.centroid.get(w) || 0) + x / k);
+}
+
+// ── merge pass: one event often starts as several clusters (a tracker, live updates, an explainer…).
+// Two clusters become one story when they are close in time, broadly similar, and share at least two rare headline words.
+{
+  const RARE = 3.0, GAP = 48 * H, first = c => c.docs[0].it.t;
+  const parent = clusters.map((_, i) => i), find = i => parent[i] === i ? i : (parent[i] = find(parent[i]));
+  const index = new Map();                                                      // rare headline word → clusters using it
+  clusters.forEach((c, i) => { for (const w of c.titleTerms.keys()) if (idf(w) > RARE) (index.get(w) || index.set(w, []).get(w)).push(i); });
+  const seen = new Set();
+  for (const ids of index.values()) {
+    if (ids.length > 40) continue;                                              // too common to tell events apart
+    for (let x = 0; x < ids.length; x++) for (let y = x + 1; y < ids.length; y++) {
+      const a = ids[x], b = ids[y], key = a * 1e5 + b; if (seen.has(key)) continue; seen.add(key);
+      const A = clusters[a], B = clusters[b];
+      if (Math.max(first(A), first(B)) - Math.min(A.last, B.last) > GAP) continue;
+      const shared = [...A.titleTerms.keys()].filter(w => idf(w) > RARE && B.titleTerms.has(w)).length;
+      if (shared >= 2 && cos(A.centroid, B.centroid) >= .2) parent[find(b)] = find(a);
+    }
+  }
+  const groups = new Map();
+  clusters.forEach((c, i) => (groups.get(find(i)) || groups.set(find(i), []).get(find(i))).push(c));
+  const merged = [...groups.values()].map(cs => {
+    if (cs.length === 1) return cs[0];
+    const docs = cs.flatMap(c => c.docs).sort((a, b) => a.it.t - b.it.t), centroid = new Map(), titleTerms = new Map();
+    for (const d of docs) { for (const [w, x] of d.v) centroid.set(w, (centroid.get(w) || 0) + x / docs.length); for (const w of d.title) titleTerms.set(w, (titleTerms.get(w) || 0) + 1); }
+    return { docs, centroid, titleTerms, last: docs.at(-1).it.t };
+  });
+  // prune: a headline that is far from the rest of its story (a related but different event) goes back to stand alone
+  const out = [];
+  for (const c of merged) {
+    if (c.docs.length < 3) { out.push(c); continue; }
+    const loo = d => { const m = new Map(); for (const e of c.docs) if (e !== d) for (const [w, x] of e.v) m.set(w, (m.get(w) || 0) + x); return cos(d.v, m) / (Math.hypot(...m.values()) || 1); };   // vs. the rest of the story
+    const keep = c.docs.filter(d => loo(d) >= .16), drop = c.docs.filter(d => !keep.includes(d));
+    if (!drop.length || keep.length < 2) { out.push(c); continue; }
+    const centroid = new Map(), titleTerms = new Map();
+    for (const d of keep) { for (const [w, x] of d.v) centroid.set(w, (centroid.get(w) || 0) + x / keep.length); for (const w of d.title) titleTerms.set(w, (titleTerms.get(w) || 0) + 1); }
+    out.push({ docs: keep, centroid, titleTerms, last: keep.at(-1).it.t });
+    for (const d of drop) out.push({ docs: [d], centroid: d.v, titleTerms: new Map([...d.title].map(w => [w, 1])), last: d.it.t });
+  }
+  console.log(`merge pass: ${clusters.length} → ${merged.length} clusters, ${out.length - merged.length} outlier headlines split off`);
+  clusters.splice(0, clusters.length, ...out);
 }
 
 // ── tone & framing lexicons (small, transparent, easy to audit) ──────────────────────────────────────────
@@ -112,12 +156,14 @@ for (const c of clusters) {
   const allText = cover.map(d => d.it.title).join(" · ");
   const places = placesFor(central.it.title, allText);
   const countries = [...new Set(cover.map(d => byId[d.it.outlet].country))];
+  const sc = {}; for (const d of cover) for (const k of new Set(countriesIn(d.it.title).length ? countriesIn(d.it.title) : countriesIn(d.it.summary || ""))) sc[k] = (sc[k] || 0) + 1;
+  const subject = Object.entries(sc).filter(([, n]) => n >= Math.max(2, cover.length * .4)).sort((a, b) => b[1] - a[1]).map(([k]) => k);   // what the story is about
   const span = cover.at(-1).it.t - t0;
   const frameCount = {}; for (const x of coverage) for (const f of x.frames) frameCount[f] = (frameCount[f] || 0) + 1;
   const tones = coverage.map(x => x.tone);
   stories.push({
     id: id8(origin.it.id), headline: central.it.title, origin: { outlet: o0.id, t: t0, title: origin.it.title, link: origin.it.link },
-    epicentre: places[0] || null, places, outlets: cover.length, countries, mentions: c.docs.length,
+    epicentre: places[0] || null, places, outlets: cover.length, countries, subject, mentions: c.docs.length,
     first: t0, last: c.last, span, stages, consensus: consensus.map(x => ({ ...x, w: surface.get(x.w) || x.w })),
     frames: Object.entries(frameCount).sort((a, b) => b[1] - a[1]).map(([f, n]) => ({ f, n })),
     tone: { avg: +(tones.reduce((a, b) => a + b, 0) / tones.length).toFixed(2), min: Math.min(...tones), max: Math.max(...tones) },
@@ -144,6 +190,60 @@ const patterns = {
   frames: Object.entries(stories.flatMap(s => s.coverage.flatMap(c => c.frames)).reduce((m, f) => (m[f] = (m[f] || 0) + 1, m), {})).sort((a, b) => b[1] - a[1]),
 };
 
+
+// ── home vs world: what each newsroom covers about its own country, and about everyone else ────────────
+// Every headline (not only clustered ones) is tagged with the countries it is about. Headlines that name no country are
+// "unplaced" and left out of the shares, so every percentage below is "of headlines that name a country".
+const about = it => { const t = countriesIn(it.title); return t.length ? t : countriesIn(it.summary || ""); };
+const blank = () => ({ n: 0, placed: 0, home: 0, abroad: 0, india: 0, sec: { home: 0, world: 0 }, by: {} });
+const perOutlet = Object.fromEntries(OUTLETS.map(o => [o.id, blank()]));
+const perCountry = {};                                                          // grouped by the outlets' home country
+for (const it of items) {
+  const o = byId[it.outlet]; if (!o) continue;
+  const cs = about(it), rows = [perOutlet[o.id], perCountry[o.country] ??= blank()];
+  for (const r of rows) {
+    r.n++; r.sec[it.sec || "world"]++;
+    if (!cs.length) continue;
+    r.placed++;
+    if (cs.includes(o.country)) r.home++;
+    if (cs.some(c => c !== o.country)) r.abroad++;
+    if (cs.includes("India")) r.india++;
+    for (const c of cs) if (c !== o.country) r.by[c] = (r.by[c] || 0) + 1;
+  }
+}
+const pct = (a, b) => b ? +(a / b * 100).toFixed(1) : 0;
+const summarise = r => ({ n: r.n, placed: r.placed, abroad: r.abroad, sec: r.sec, homeShare: pct(r.home, r.placed), abroadShare: pct(r.abroad, r.placed), indiaShare: pct(r.india, r.placed),
+  top: Object.entries(r.by).sort((a, b) => b[1] - a[1]).slice(0, 8).map(([c, k]) => ({ c, share: pct(k, r.abroad) })) });   // top = share of its foreign coverage
+// who covers whom: rows = where the newsroom is, columns = the country the headline is about
+const COLS = ["India", "United States", "United Kingdom", "China", "Pakistan", "Israel", "Palestine", "Russia", "Ukraine", "Iran"];
+const matrix = Object.entries(perCountry).filter(([, r]) => r.abroad >= 15).sort((a, b) => b[1].abroad - a[1].abroad)
+  .map(([country, r]) => ({ country, abroad: r.abroad, cells: COLS.map(c => c === country ? null : pct(r.by[c] || 0, r.abroad)) }));   // % of foreign coverage
+// mirror: how much India's newsrooms write about a country vs how much that country's newsrooms write about India
+const IN = perCountry.India || blank();
+// shares are "of each side's foreign coverage" so they don't depend on how many home vs world headlines a feed carries
+const mirror = Object.entries(perCountry).filter(([c, r]) => c !== "India" && r.placed >= 20)
+  .map(([c, r]) => ({ country: c, indiaAboutThem: pct(IN.by[c] || 0, IN.abroad), themAboutIndia: pct(r.india, r.abroad), n: r.abroad }));
+// shared agenda: share of traced stories each pair of newsroom-countries both carried
+const carried = stories.map(s => new Set(s.coverage.map(c => byId[c.outlet].country)));
+const homes = Object.keys(perCountry).filter(c => perCountry[c].placed >= 20);
+const agenda = homes.flatMap((a, i) => homes.slice(i + 1).map(b => ({ a, b, shared: carried.filter(x => x.has(a) && x.has(b)).length })))
+  .filter(x => x.shared).sort((x, y) => y.shared - x.shared);
+// examples for the report (and proof): India stories that went abroad, foreign stories India picked up
+const ex = (f, n = 6) => stories.filter(f).slice(0, n).map(s => ({ id: s.id, headline: s.headline, origin: s.origin.outlet, outlets: s.outlets, countries: s.countries }));
+const compare = {
+  updated, items: items.length, from: Math.min(...items.map(i => i.t)), to: Math.max(...items.map(i => i.t)),
+  outlets: OUTLETS.map(o => ({ id: o.id, country: o.country, page: o.page, ...summarise(perOutlet[o.id]) })).filter(o => o.n),
+  countries: Object.entries(perCountry).map(([c, r]) => ({ country: c, ...summarise(r) })).sort((a, b) => b.n - a.n),
+  matrix: { cols: COLS, rows: matrix }, mirror, agenda,
+  aboutIndia: { stories: stories.filter(s => s.subject.includes("India")).length, carriedAbroad: stories.filter(s => s.subject.includes("India") && s.countries.some(c => c !== "India")).length },
+  aboutElsewhereInIndia: { stories: stories.filter(s => s.subject.length && !s.subject.includes("India")).length, carriedInIndia: stories.filter(s => s.subject.length && !s.subject.includes("India") && s.countries.includes("India")).length },
+  examples: {
+    indiaToWorld: ex(s => s.subject.includes("India") && s.countries.some(c => c !== "India")),        // about India, carried abroad
+    worldToIndia: ex(s => s.subject.length && !s.subject.includes("India") && s.countries.includes("India")),   // about elsewhere, carried in India
+    indiaOnly: ex(s => s.subject.includes("India") && s.countries.length === 1),
+  },
+};
+
 // ── write ──────────────────────────────────────────────────────────────────────────────────────────────
 await rm(new URL("s/", DATA), { recursive: true, force: true });
 await mkdir(new URL("s/", DATA), { recursive: true });
@@ -151,6 +251,7 @@ const TOP = stories.slice(0, 120);
 for (const s of TOP) await writeFile(new URL(`s/${s.id}.json`, DATA), JSON.stringify(s));
 await writeFile(new URL("stories.json", DATA), JSON.stringify({ updated, stories: TOP.map(({ coverage, ...s }) => ({ ...s, trail: coverage.map(c => [c.outlet, c.lag]) })) }));
 await writeFile(new URL("patterns.json", DATA), JSON.stringify(patterns));
+await writeFile(new URL("compare.json", DATA), JSON.stringify(compare));
 await writeFile(new URL("outlets.json", DATA), JSON.stringify(OUTLETS.map(({ feeds, ...o }) => o)));
 console.log(`${clusters.length} clusters → ${stories.length} stories (≥3 outlets); wrote top ${TOP.length}`);
 for (const s of stories.slice(0, 15)) console.log(`${String(s.score).padStart(6)}  ${s.outlets}o ${s.countries.length}c  first:${s.origin.outlet.padEnd(10)} ${s.headline.slice(0, 90)}`);
