@@ -88,7 +88,7 @@ for (const d of docs) {                                                         
   for (const c of merged) {
     if (c.docs.length < 3) { out.push(c); continue; }
     const loo = d => { const m = new Map(); for (const e of c.docs) if (e !== d) for (const [w, x] of e.v) m.set(w, (m.get(w) || 0) + x); return cos(d.v, m) / (Math.hypot(...m.values()) || 1); };   // vs. the rest of the story
-    const keep = c.docs.filter(d => loo(d) >= .16), drop = c.docs.filter(d => !keep.includes(d));
+    const keep = c.docs.filter(d => loo(d) >= .2), drop = c.docs.filter(d => !keep.includes(d));
     if (!drop.length || keep.length < 2) { out.push(c); continue; }
     const centroid = new Map(), titleTerms = new Map();
     for (const d of keep) { for (const [w, x] of d.v) centroid.set(w, (centroid.get(w) || 0) + x / keep.length); for (const w of d.title) titleTerms.set(w, (titleTerms.get(w) || 0) + 1); }
@@ -156,14 +156,22 @@ for (const c of clusters) {
   const allText = cover.map(d => d.it.title).join(" · ");
   const places = placesFor(central.it.title, allText);
   const countries = [...new Set(cover.map(d => byId[d.it.outlet].country))];
-  const sc = {}; for (const d of cover) for (const k of new Set(countriesIn(d.it.title).length ? countriesIn(d.it.title) : countriesIn(d.it.summary || ""))) sc[k] = (sc[k] || 0) + 1;
-  const subject = Object.entries(sc).filter(([, n]) => n >= Math.max(2, cover.length * .4)).sort((a, b) => b[1] - a[1]).map(([k]) => k);   // what the story is about
+  // what the story is about: a country counts if outlets *outside* it name it too (so an "Indian-origin" or "India staff"
+  // angle added by Indian newsrooms doesn't make a UK court case or a Microsoft story "about India")
+  const named = cover.map(d => ({ home: byId[d.it.outlet].country, cs: countriesIn(d.it.title).length ? countriesIn(d.it.title) : countriesIn(d.it.summary || "") }));
+  const subject = [...new Set(named.flatMap(x => x.cs))].map(k => {
+    const others = named.filter(x => x.home !== k), pool = others.length ? others : named;
+    return [k, pool.filter(x => x.cs.includes(k)).length, pool.length];
+  }).filter(([, n, of]) => n >= 1 && n >= of * .4 && (of > 1 || named.length < 3 ? true : n >= 1)).sort((a, b) => b[1] / b[2] - a[1] / a[2]).map(([k]) => k);
+  // the India angle: Indian outlets naming India in a story that isn't about India
+  const indAngle = subject.length && !subject.includes("India") ? { indian: named.filter(x => x.home === "India").length, withIndia: named.filter(x => x.home === "India" && x.cs.includes("India")).length,
+    foreignWithIndia: named.filter(x => x.home !== "India" && x.cs.includes("India")).length } : null;
   const span = cover.at(-1).it.t - t0;
   const frameCount = {}; for (const x of coverage) for (const f of x.frames) frameCount[f] = (frameCount[f] || 0) + 1;
   const tones = coverage.map(x => x.tone);
   stories.push({
     id: id8(origin.it.id), headline: central.it.title, origin: { outlet: o0.id, t: t0, title: origin.it.title, link: origin.it.link },
-    epicentre: places[0] || null, places, outlets: cover.length, countries, subject, mentions: c.docs.length,
+    epicentre: places[0] || null, places, outlets: cover.length, countries, subject, indAngle, mentions: c.docs.length,
     first: t0, last: c.last, span, stages, consensus: consensus.map(x => ({ ...x, w: surface.get(x.w) || x.w })),
     frames: Object.entries(frameCount).sort((a, b) => b[1] - a[1]).map(([f, n]) => ({ f, n })),
     tone: { avg: +(tones.reduce((a, b) => a + b, 0) / tones.length).toFixed(2), min: Math.min(...tones), max: Math.max(...tones) },
@@ -235,6 +243,15 @@ const compare = {
   outlets: OUTLETS.map(o => ({ id: o.id, country: o.country, page: o.page, ...summarise(perOutlet[o.id]) })).filter(o => o.n),
   countries: Object.entries(perCountry).map(([c, r]) => ({ country: c, ...summarise(r) })).sort((a, b) => b.n - a.n),
   matrix: { cols: COLS, rows: matrix }, mirror, agenda,
+  indiaAngle: (() => { const xs = stories.filter(s => s.indAngle && s.indAngle.indian); const ind = xs.reduce((a, s) => a + s.indAngle.indian, 0), wi = xs.reduce((a, s) => a + s.indAngle.withIndia, 0);
+    return { stories: xs.length, indianHeadlines: ind, withIndia: wi, share: pct(wi, ind), localised: xs.filter(s => s.indAngle.withIndia && !s.indAngle.foreignWithIndia).slice(0, 8).map(s => ({ id: s.id, headline: s.headline, outlets: s.outlets })) }; })(),
+  // home angle for every country: in stories about somewhere else, how often a country's newsrooms name their own country
+  homeAngle: Object.keys(perCountry).map(k => {
+    let n = 0, w = 0;
+    for (const s of stories) { if (!s.subject.length || s.subject.includes(k)) continue;
+      for (const c of s.coverage) if (byId[c.outlet].country === k) { n++; const cs = countriesIn(c.title); if ((cs.length ? cs : countriesIn(c.summary || "")).includes(k)) w++; } }
+    return { country: k, headlines: n, withHome: w, share: pct(w, n) };
+  }).filter(x => x.headlines >= 8).sort((a, b) => b.share - a.share),
   aboutIndia: { stories: stories.filter(s => s.subject.includes("India")).length, carriedAbroad: stories.filter(s => s.subject.includes("India") && s.countries.some(c => c !== "India")).length },
   aboutElsewhereInIndia: { stories: stories.filter(s => s.subject.length && !s.subject.includes("India")).length, carriedInIndia: stories.filter(s => s.subject.length && !s.subject.includes("India") && s.countries.includes("India")).length },
   examples: {
