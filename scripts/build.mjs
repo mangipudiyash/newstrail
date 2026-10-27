@@ -5,7 +5,7 @@ import { readFile, writeFile, mkdir, rm } from "node:fs/promises";
 import { createHash } from "node:crypto";
 import { OUTLETS, byId } from "./outlets.mjs";
 import { placesFor } from "./places.mjs";
-import { countriesIn } from "./countries.mjs";
+import { countriesIn, regionOf, REGION } from "./countries.mjs";
 
 const DATA = new URL("../site/data/", import.meta.url);
 const raw = JSON.parse(await readFile(new URL("items.json", DATA), "utf8")), updated = raw.updated;
@@ -154,7 +154,7 @@ for (const c of clusters) {
              tone: toneOf(d.it.title + " " + (d.it.summary || "")), frames: framesOf(d.it.title + " " + (d.it.summary || "")), angle };
   });
   const allText = cover.map(d => d.it.title).join(" · ");
-  const places = placesFor(central.it.title, allText);
+  let places = placesFor(central.it.title, allText);
   const countries = [...new Set(cover.map(d => byId[d.it.outlet].country))];
   // what the story is about: a country counts if outlets *outside* it name it too (so an "Indian-origin" or "India staff"
   // angle added by Indian newsrooms doesn't make a UK court case or a Microsoft story "about India")
@@ -164,6 +164,10 @@ for (const c of clusters) {
     return [k, pool.filter(x => x.cs.includes(k)).length, pool.length];
   }).filter(([, n, of]) => n >= 1 && n >= of * .4 && (of > 1 || named.length < 3 ? true : n >= 1)).sort((a, b) => b[1] / b[2] - a[1] / a[2]).map(([k]) => k);
   // the India angle: Indian outlets naming India in a story that isn't about India
+  // the map pin follows what the story is about: a country-level place that isn't the subject gives way to the subject itself
+  if (subject.length && (!places.length || (places[0].rank === 1 && !subject.includes(places[0].name)))) {
+    const sp = placesFor(subject[0], ""); if (sp.length) places = [...sp, ...places.filter(p => p.name !== sp[0].name)].slice(0, 2);
+  }
   const indAngle = subject.length && !subject.includes("India") ? { indian: named.filter(x => x.home === "India").length, withIndia: named.filter(x => x.home === "India" && x.cs.includes("India")).length,
     foreignWithIndia: named.filter(x => x.home !== "India" && x.cs.includes("India")).length } : null;
   const span = cover.at(-1).it.t - t0;
@@ -252,6 +256,26 @@ const compare = {
       for (const c of s.coverage) if (byId[c.outlet].country === k) { n++; const cs = countriesIn(c.title); if ((cs.length ? cs : countriesIn(c.summary || "")).includes(k)) w++; } }
     return { country: k, headlines: n, withHome: w, share: pct(w, n) };
   }).filter(x => x.headlines >= 8).sort((a, b) => b.share - a.share),
+  // hot zones: where the world's newsrooms pointed this week, by region (every headline counts once per region it names)
+  regions: (() => {
+    // every newsroom gets one equal vote, split across the regions its headlines name — so outlets with long feeds don't dominate
+    const R = Object.fromEntries(Object.keys(REGION).map(r => [r, { n: 0, w: 0, by: {} }])), per = {};
+    for (const it of items) { const cs = about(it); if (!cs.length) continue; const p = per[it.outlet] ??= { placed: 0, r: {} }; p.placed++;
+      for (const r of new Set(cs.map(c => regionOf[c]).filter(Boolean))) { R[r].n++; p.r[r] = (p.r[r] || 0) + 1; }
+      for (const c of cs) if (regionOf[c]) R[regionOf[c]].by[c] = (R[regionOf[c]].by[c] || 0) + 1; }
+    const voters = Object.values(per).filter(p => p.placed >= 10);
+    for (const p of voters) for (const [r, k] of Object.entries(p.r)) R[r].w += k / p.placed / voters.length;
+    const tot = Object.values(R).reduce((a, r) => a + r.w, 0) || 1;
+    return Object.entries(R).map(([region, r]) => {
+      const top = stories.filter(s => s.subject.some(c => regionOf[c] === region)).sort((a, b) => b.outlets - a.outlets)[0];
+      return { region, share: pct(r.w, tot), headlines: r.n, newsrooms: voters.length, countries: Object.entries(r.by).sort((a, b) => b[1] - a[1]).slice(0, 4).map(([c, n]) => ({ c, n })),
+        top: top ? { id: top.id, headline: top.headline, outlets: top.outlets, countries: top.countries.length } : null };
+    }).sort((a, b) => b.share - a.share);
+  })(),
+  // the week's farthest-travelled story, with its full trail for the map
+  traveller: (() => { const s = [...stories].sort((a, b) => b.countries.length - a.countries.length || b.outlets - a.outlets)[0];
+    return s && { id: s.id, headline: s.headline, epicentre: s.epicentre, subject: s.subject, countries: s.countries, span: s.span,
+      trail: s.coverage.map(c => ({ outlet: c.outlet, lag: c.lag, title: c.title })) }; })(),
   aboutIndia: { stories: stories.filter(s => s.subject.includes("India")).length, carriedAbroad: stories.filter(s => s.subject.includes("India") && s.countries.some(c => c !== "India")).length },
   aboutElsewhereInIndia: { stories: stories.filter(s => s.subject.length && !s.subject.includes("India")).length, carriedInIndia: stories.filter(s => s.subject.length && !s.subject.includes("India") && s.countries.includes("India")).length },
   examples: {

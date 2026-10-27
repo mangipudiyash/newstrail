@@ -36,3 +36,15 @@ export const COUNTRIES = Object.keys(C);
 export function countriesIn(text) {
   return RX.filter(({ caps, rest }) => rest.test(text) || (caps && caps.test(text))).map(r => r.country);
 }
+
+// regions for the weekly "hot zones"
+export const REGION = {
+  "South Asia": ["India", "Pakistan", "Bangladesh", "Nepal", "Sri Lanka", "Afghanistan", "Maldives"],
+  "Middle East": ["Iran", "Iraq", "Israel", "Palestine", "Lebanon", "Syria", "Saudi Arabia", "UAE", "Qatar", "Yemen", "Jordan", "Turkey", "Egypt"],
+  Europe: ["United Kingdom", "France", "Germany", "Italy", "Spain", "Ukraine", "Russia", "Serbia", "Poland", "Romania"],
+  Americas: ["United States", "Canada", "Mexico", "Brazil", "Venezuela"],
+  "East Asia": ["China", "Hong Kong", "Japan", "South Korea", "North Korea", "Taiwan", "Myanmar", "Thailand", "Indonesia", "Singapore"],
+  Africa: ["South Africa", "Nigeria", "Kenya", "Sudan", "Uganda"],
+  Oceania: ["Australia"],
+};
+export const regionOf = Object.fromEntries(Object.entries(REGION).flatMap(([r, cs]) => cs.map(c => [c, r])));
