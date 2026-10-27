@@ -2,7 +2,7 @@
 
 **Live:** https://mangipudiyash.github.io/newstrail/
 
-NewsTrail follows every story across 22 Indian and international newsrooms and answers four questions no single news site can:
+NewsTrail follows every story across 21 Indian and international newsrooms and answers four questions no single news site can:
 
 1. **Where did it start?** Which outlet reported it first, and where the event happened.
 2. **How did it spread?** From the first report, to national coverage, to crossing borders, replayed on an animated world map.
@@ -15,7 +15,7 @@ Across all stories, the **Patterns** page shows who breaks news first, how far b
 
 ```
 every hour (GitHub Actions)
-  collect.mjs  → reads 22 public RSS feeds → site/data/items.json   (rolling 7-day history, kept in the Actions cache)
+  collect.mjs  → reads the home + world RSS feeds of 21 newsrooms → site/data/items.json   (rolling 7-day history, kept in the Actions cache)
   build.mjs    → groups headlines into stories → site/data/stories.json, s/<id>.json, patterns.json
   deploy       → GitHub Pages serves site/ as static files
 ```
