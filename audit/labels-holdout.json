@@ -1,0 +1,1612 @@
+{
+ "criterion": "Same as judgements.json.",
+ "reviewed": "2026-10-29",
+ "sample": "40 unseen stories (seed 777) built with PRUNE .3 / ORIGIN_MIN .35, sharing no headline with the tuning set",
+ "stories": [
+  {
+   "k": 1,
+   "id": "e78c0f15a5",
+   "headline": "Allahabad HC lawyers stage protest over alleged misbehaviour by judge, vandalise courtroom furniture",
+   "items": [
+    {
+     "link": "https://www.hindustantimes.com/india-news/allahabad-hc-lawyers-stage-protest-over-alleged-misbehaviour-by-judge-vandalise-courtroom-furniture-101793184458965.html",
+     "outlet": "ht",
+     "title": "Allahabad HC lawyers stage protest over alleged misbehaviour by judge, vandalise courtroom furniture",
+     "ok": true
+    },
+    {
+     "link": "https://www.indiatoday.in/india/law-news/story/allahabad-high-court-bar-association-uproar-writes-letter-chief-justice-after-lawyer-humiliation-video-goes-viral-3027200-2026-10-28?utm_source=rss",
+     "outlet": "indiatoday",
+     "title": "Allahabad HC in chaos over seat argument, lawyers' body writes to Chief Justice",
+     "ok": true
+    },
+    {
+     "link": "https://www.thehindu.com/news/national/uttar-pradesh/furniture-thrown-proceedings-disrupted-as-lawyers-protest-against-hc-judge-turns-chaotic/article71636515.ece",
+     "outlet": "hindu",
+     "title": "Furniture thrown, proceedings disrupted as lawyers’ protest against HC judge turns chaotic",
+     "ok": true
+    }
+   ],
+   "originOk": true
+  },
+  {
+   "k": 2,
+   "id": "916dd1ff18",
+   "headline": "Serbia’s Political Battle: Students Challenge Vučić Before Election Day | Serbia Elections | News18",
+   "items": [
+    {
+     "link": "https://www.news18.com/videos/breaking-news/serbia-s-political-battle-students-challenge-vu-i-before-election-day-serbia-elections-news18-10393696.html",
+     "outlet": "news18",
+     "title": "Serbia’s Political Battle: Students Challenge Vučić Before Election Day | Serbia Elections | News18",
+     "ok": false
+    },
+    {
+     "link": "https://www.foxnews.com/world/serbias-longtime-leader-faces-biggest-political-test-students-mount-election-challenge",
+     "outlet": "fox",
+     "title": "Serbia’s longtime leader faces biggest political test as students mount election challenge",
+     "ok": false
+    },
+    {
+     "link": "https://www.thehindu.com/news/international/how-is-a-leaderless-group-challenging-the-serbian-presidentexplained/article71614470.ece",
+     "outlet": "hindu",
+     "title": "How is a leaderless group challenging the Serbian President? Explained",
+     "ok": false
+    },
+    {
+     "link": "https://www.npr.org/2026/10/26/nx-s1-6016298/serbia-student-list-vucic-election",
+     "outlet": "npr",
+     "title": "'The smell of freedom': Serbia's student movement celebrates election triumph",
+     "ok": true
+    },
+    {
+     "link": "https://www.nytimes.com/2026/10/25/world/europe/serbia-vucic-election-defeat.html",
+     "outlet": "nyt",
+     "title": "Aleksandar Vucic Concedes Defeat in Serbian Election",
+     "ok": true
+    },
+    {
+     "link": "https://www.bbc.co.uk/news/articles/cw5yn3xlprpmo?at_medium=RSS&at_campaign=rss",
+     "outlet": "bbc",
+     "title": "Celebrations in Serbia after veteran ruler Vučić loses election to student-led protest movement",
+     "ok": true
+    },
+    {
+     "link": "https://www.hindustantimes.com/world-news/aleksandar-vucic-serbia-s-autocrat-loses-to-a-bunch-of-students-101793070518885.html",
+     "outlet": "ht",
+     "title": "Aleksandar Vucic, Serbia’s autocrat, loses to a bunch of students",
+     "ok": true
+    },
+    {
+     "link": "https://timesofindia.indiatimes.com/world/europe/fireworks-flags-and-celebrations-as-student-led-movement-wins-in-serbia-can-they-deliver-reforms/articleshow/135226330.cms",
+     "outlet": "toi",
+     "title": "Fireworks and celebrations as student-led movement wins in Serbia; can they deliver?",
+     "ok": true
+    },
+    {
+     "link": "https://scroll.in/article/1096675/as-serbian-student-movement-ends-ruling-partys-12-year-reign-here-are-the-challenges-they-face?utm_source=rss&utm_medium=public",
+     "outlet": "scroll",
+     "title": "As Serbian student movement ends ruling party’s 12-year reign, here are the challenges they face",
+     "ok": true
+    },
+    {
+     "link": "https://www.france24.com/en/europe/20261027-how-student-assemblies-brought-down-the-serbian-government",
+     "outlet": "france24",
+     "title": "How student assemblies brought down the Serbian government",
+     "ok": true
+    },
+    {
+     "link": "https://www.scmp.com/news/china/diplomacy/article/3372406/why-china-ties-serbia-face-scrutiny-not-severance-after-historic-vucic-loss",
+     "outlet": "scmp",
+     "title": "Why China’s ties with Serbia face scrutiny, not severance, after historic Vucic loss",
+     "ok": true
+    },
+    {
+     "link": "https://economictimes.indiatimes.com/news/international/world-news/serbias-leaderless-student-movement-won-the-election-now-it-must-choose-a-leader/articleshow/135256597.cms",
+     "outlet": "et",
+     "title": "Serbia’s 'leaderless' student movement won the election. Now it must choose a leader",
+     "ok": true
+    },
+    {
+     "link": "https://www.indiatoday.in/world/story/serbian-broadcaster-apologises-for-years-of-bias-after-aleksandar-vucic-election-defeat-3027315-2026-10-29?utm_source=rss",
+     "outlet": "indiatoday",
+     "title": "After Aleksandar Vucic's poll loss, Serbian broadcaster apologises for years of bias",
+     "ok": true
+    },
+    {
+     "link": "https://www.theguardian.com/news/audio/2026/oct/29/how-students-toppled-serbias-strongman-podcast",
+     "outlet": "guardian",
+     "title": "How students toppled Serbia’s strongman – podcast",
+     "ok": true
+    }
+   ],
+   "originOk": false
+  },
+  {
+   "k": 3,
+   "id": "279e4db3f4",
+   "headline": "DNA links serial killer Ted Bundy to 1974 murder of Utah girl",
+   "items": [
+    {
+     "link": "https://www.foxnews.com/us/ted-bundy-expected-linked-another-decades-old-homicide-nearly-40-years-after-execution",
+     "outlet": "fox",
+     "title": "Ted Bundy linked to another decades-old homicide nearly 40 years after his execution",
+     "ok": true
+    },
+    {
+     "link": "https://economictimes.indiatimes.com/news/international/world-news/ted-bundy-and-an-unsolved-1974-utah-homicide-case-why-authorities-are-preparing-new-update-on-decades-old-murder-investigation/articleshow/135243431.cms",
+     "outlet": "et",
+     "title": "Ted Bundy and an unsolved 1974 Utah homicide case: Why authorities are preparing new update on decades-old murder investigation",
+     "ok": false
+    },
+    {
+     "link": "https://www.hindustantimes.com/world-news/us-news/utah-authorities-are-connecting-serial-killer-ted-bundy-to-another-1970s-homicide-101793126817356.html",
+     "outlet": "ht",
+     "title": "Utah authorities are connecting serial killer Ted Bundy to another 1970s homicide",
+     "ok": true
+    },
+    {
+     "link": "https://www.scmp.com/news/world/united-states-canada/article/3372352/serial-killer-ted-bundy-linked-death-us-teen-after-over-50-years",
+     "outlet": "scmp",
+     "title": "Serial killer Ted Bundy linked to death of US teen after over 50 years",
+     "ok": true
+    },
+    {
+     "link": "https://www.abc.net.au/news/2026-10-28/serial-killer-ted-bundy-linked-to-death-of-teenage-girl/107317132",
+     "outlet": "abc",
+     "title": "Police use DNA advances to identify another Ted Bundy victim from 70s",
+     "ok": true
+    },
+    {
+     "link": "https://www.theguardian.com/us-news/2026/oct/27/ted-bundy-utah-murder",
+     "outlet": "guardian",
+     "title": "DNA links serial killer Ted Bundy to 1974 murder of Utah girl",
+     "ok": true
+    },
+    {
+     "link": "https://www.nytimes.com/2026/10/27/us/ted-bundy-cold-case-utah.html",
+     "outlet": "nyt",
+     "title": "Ted Bundy Is Linked to 1974 Death of Utah Teenager",
+     "ok": true
+    },
+    {
+     "link": "https://www.ndtv.com/world-news/ted-bundy-who-killed-30-women-linked-to-1974-utah-girl-murder-melissa-ann-smith-12247762#publisher=newsstand",
+     "outlet": "ndtv",
+     "title": "Ted Bundy, Who Killed 30 Women, Linked To 1974 Utah Girl Murder",
+     "ok": true
+    }
+   ],
+   "originOk": true
+  },
+  {
+   "k": 4,
+   "id": "5f8a8af2eb",
+   "headline": "Knife attacker shot dead by police outside Israeli embassy",
+   "items": [
+    {
+     "link": "https://www.hindustantimes.com/world-news/serbia-launches-terror-attack-probe-after-guard-outside-israeli-embassy-in-belgrade-attacked-israel-election-news-101793169044128.html",
+     "outlet": "ht",
+     "title": "Serbia launches 'terror attack' probe after guard outside Israeli embassy in Belgrade attacked",
+     "ok": true
+    },
+    {
+     "link": "https://www.dw.com/en/serbian-police-shoot-dead-assailant-at-israeli-embassy/a-79782905?maca=en-rss-en-world-4025-rdf",
+     "outlet": "dw",
+     "title": "Serbian police shoot dead assailant at Israeli Embassy",
+     "ok": true
+    },
+    {
+     "link": "https://economictimes.indiatimes.com/news/international/world-news/policeman-kills-knife-attacker-outside-israeli-embassy-in-serbia/articleshow/135259307.cms",
+     "outlet": "et",
+     "title": "Policeman kills knife attacker outside Israeli embassy in Serbia",
+     "ok": true
+    },
+    {
+     "link": "https://www.thehindu.com/news/international/policeman-kills-knife-attacker-outside-israeli-embassy-in-serbia/article71635091.ece",
+     "outlet": "hindu",
+     "title": "Policeman kills knife attacker outside Israeli embassy in Serbia",
+     "ok": true
+    },
+    {
+     "link": "https://news.sky.com/story/serbia-knife-attacker-shot-dead-by-police-outside-israeli-embassy-in-belgrade-13604683",
+     "outlet": "sky",
+     "title": "Knife attacker shot dead by police outside Israeli embassy",
+     "ok": true
+    },
+    {
+     "link": "https://www.bbc.co.uk/news/articles/ck5ynj4eeyj2o?at_medium=RSS&at_campaign=rss",
+     "outlet": "bbc",
+     "title": "Serbian shot dead after attacking officer outside Israeli embassy, minister says",
+     "ok": true
+    },
+    {
+     "link": "https://www.scmp.com/news/world/europe/article/3372460/assailant-outside-israeli-embassy-serbia-killed-after-attacking-police-officer",
+     "outlet": "scmp",
+     "title": "Assailant outside Israeli embassy in Serbia killed after attacking police officer",
+     "ok": true
+    },
+    {
+     "link": "https://www.foxnews.com/world/attacker-shouting-allahu-akbar-killed-outside-israeli-embassy-serbia-police-say",
+     "outlet": "fox",
+     "title": "Attacker shouting 'Allahu Akbar' killed outside Israeli Embassy in Serbia, police say",
+     "ok": true
+    },
+    {
+     "link": "https://www.nytimes.com/2026/10/28/world/europe/knife-wielding-attacker-fatally-shot-outside-israeli-embassy-in-serbia.html",
+     "outlet": "nyt",
+     "title": "Knife-Wielding Attacker Fatally Shot Outside Israeli Embassy in Serbia",
+     "ok": true
+    }
+   ],
+   "originOk": true
+  },
+  {
+   "k": 5,
+   "id": "312a12264a",
+   "headline": "Monitor welfare schemes closely: PM Modi to chief secretaries",
+   "items": [
+    {
+     "link": "https://www.news18.com/india/plug-implementation-gaps-pm-modi-tells-chief-secretaries-to-ensure-benefits-reach-beneficiaries-10402231.html",
+     "outlet": "news18",
+     "title": "‘Plug Implementation Gaps’: PM Modi Tells Chief Secretaries To Ensure Benefits Reach Beneficiaries",
+     "ok": true
+    },
+    {
+     "link": "https://timesofindia.indiatimes.com/india/monitor-welfare-schemes-closely-pm-modi-to-chief-secretaries/articleshow/135283582.cms",
+     "outlet": "toi",
+     "title": "Monitor welfare schemes closely: PM Modi to chief secretaries",
+     "ok": true
+    },
+    {
+     "link": "https://scroll.in/article/1096616/sir-applies-a-decade-of-exclusion-lessons-perfected-on-welfare-schemes?utm_source=rss&utm_medium=public",
+     "outlet": "scroll",
+     "title": "SIR applies a decade of exclusion lessons perfected on welfare schemes",
+     "ok": false
+    }
+   ],
+   "originOk": true
+  },
+  {
+   "k": 6,
+   "id": "f41d3285ff",
+   "headline": "BJP fields Hardeep Singh Puri for Rajya Sabha bypoll",
+   "items": [
+    {
+     "link": "https://www.hindustantimes.com/india-news/bjp-nominates-hardeep-singh-puri-for-madhya-pradesh-rajya-sabha-bypoll-101793176425740.html",
+     "outlet": "ht",
+     "title": "Hardeep Puri nominated for bypoll from Madhya Pradesh Rajya Sabha seat vacated by L Murugan",
+     "ok": true
+    },
+    {
+     "link": "https://timesofindia.indiatimes.com/india/bjp-fields-hardeep-singh-puri-as-its-candidate-for-rajya-sabha-bypoll-from-mp/articleshow/135258383.cms",
+     "outlet": "toi",
+     "title": "BJP fields Hardeep Singh Puri as its candidate for Rajya Sabha bypoll from MP",
+     "ok": true
+    },
+    {
+     "link": "https://www.ndtv.com/india-news/bjp-picks-hardeep-puri-for-rajya-sabha-bypoll-from-madhya-pradesh-12247548#publisher=newsstand",
+     "outlet": "ndtv",
+     "title": "BJP Picks Hardeep Puri For Rajya Sabha Bypoll From Madhya Pradesh",
+     "ok": true
+    },
+    {
+     "link": "https://www.thehindu.com/news/national/union-minister-l-murugan-resigns-wishes-to-return-to-tamil-nadu-to-strengthen-bjp-in-state/article71579815.ece",
+     "outlet": "hindu",
+     "title": "L. Murugan resigns from Union Ministry, Rajya Sabha seat, setting off buzz about a pre-Deepavali Cabinet reset",
+     "ok": false
+    },
+    {
+     "link": "https://www.indiatoday.in/india/video/bjp-fields-hardeep-puri-for-madhya-pradesh-rajya-sabha-by-poll-following-murugan-exit-ytvd-3026821-2026-10-28?utm_source=rss",
+     "outlet": "indiatoday",
+     "title": "BJP Fields Hardeep Puri for Madhya Pradesh Rajya Sabha By-Poll Following Murugan Exit",
+     "ok": true
+    },
+    {
+     "link": "https://www.news18.com/india/bjp-picks-hardeep-puri-for-biennial-election-to-rajya-sabha-ws-l-10401142.html",
+     "outlet": "news18",
+     "title": "BJP Picks Hardeep Puri For Rajya Sabha Bypoll, Ends Speculation Over His Seat",
+     "ok": true
+    },
+    {
+     "link": "https://scroll.in/latest/1096708/hardeep-singh-puri-named-bjp-candidate-for-madhya-pradesh-rajya-sabha-bye-poll?utm_source=rss&utm_medium=public",
+     "outlet": "scroll",
+     "title": "Hardeep Singh Puri named BJP candidate for Madhya Pradesh Rajya Sabha bye-poll",
+     "ok": true
+    },
+    {
+     "link": "https://www.livemint.com/news/bjp-fields-hardeep-singh-puri-for-rajya-sabha-bypoll-11793197878461.html",
+     "outlet": "mint",
+     "title": "BJP fields Hardeep Singh Puri for Rajya Sabha bypoll",
+     "ok": true
+    }
+   ],
+   "originOk": true
+  },
+  {
+   "k": 7,
+   "id": "1716b64927",
+   "headline": "Explained: Why Proposed Siang Dam In Arunachal Is Facing Protests",
+   "items": [
+    {
+     "link": "https://www.news18.com/explainers/siang-dam-explained-why-india-wants-a-mega-dam-in-arunachal-amid-chinas-hydropower-push-ws-l-10397813.html",
+     "outlet": "news18",
+     "title": "Siang Dam Explained: Why India Wants A Mega Dam In Arunachal Amid China’s Hydropower Push",
+     "ok": true
+    },
+    {
+     "link": "https://www.livemint.com/news/world/why-siang-project-matters-for-india-as-china-builds-mega-brahmaputra-dam-and-why-arunachal-locals-are-up-in-arms-11793024704737.html",
+     "outlet": "mint",
+     "title": "Why Siang project matters for India as China builds mega Brahmaputra dam, and why Arunachal locals are up in arms",
+     "ok": true
+    },
+    {
+     "link": "https://economictimes.indiatimes.com/news/india/arunachals-anti-dam-protests-spread-as-agitators-oppose-1605-mw-menga-hydropower-project/articleshow/135218108.cms",
+     "outlet": "et",
+     "title": "Arunachal’s anti-dam protests spread as agitators oppose 1,605 MW Menga hydropower project",
+     "ok": true
+    },
+    {
+     "link": "https://www.hindustantimes.com/india-news/congress-questions-raf-deployment-amid-arunachal-dam-protests-26-arrested-in-pasighat-violence-spreads-to-upper-subansiri-101793078248593.html",
+     "outlet": "ht",
+     "title": "Congress questions RAF deployment amid Arunachal dam protests; 26 arrested in Pasighat, violence spreads to Upper Subansiri",
+     "ok": true
+    },
+    {
+     "link": "https://scroll.in/latest/1096673/sixty-nine-arrested-under-arunachal-anti-terror-law-after-protests-against-dam-project-turn-violent?utm_source=rss&utm_medium=public",
+     "outlet": "scroll",
+     "title": "69 arrested under Arunachal anti-terror law after protests against dam project turn violent",
+     "ok": true
+    },
+    {
+     "link": "https://www.ndtv.com/india-news/explained-why-proposed-siang-dam-in-arunachal-is-facing-protests-12244718#publisher=newsstand",
+     "outlet": "ndtv",
+     "title": "Explained: Why Proposed Siang Dam In Arunachal Is Facing Protests",
+     "ok": true
+    }
+   ],
+   "originOk": true
+  },
+  {
+   "k": 8,
+   "id": "a1560bd6e8",
+   "headline": "All SIR decisions unanimous, Form 6 not amended: Election Commission to Supreme Court",
+   "items": [
+    {
+     "link": "https://www.hindustantimes.com/india-news/all-3-sir-orders-unanimous-plea-against-cec-gyanesh-kumar-based-on-single-news-report-ec-tells-sc-101793027114031.html",
+     "outlet": "ht",
+     "title": "All SIR decisions unanimous, Form 6 not amended: Election Commission to Supreme Court",
+     "ok": true
+    },
+    {
+     "link": "https://economictimes.indiatimes.com/news/india/eci-rejects-unilateral-action-charge-against-cec-gyanesh-kumar-tells-supreme-court-all-three-sir-orders-were-unanimous/articleshow/135214598.cms",
+     "outlet": "et",
+     "title": "ECI rejects unilateral action charge against CEC Gyanesh Kumar, tells Supreme Court all three SIR orders were unanimous",
+     "ok": true
+    },
+    {
+     "link": "https://www.news18.com/india/all-three-sir-orders-were-unanimous-ec-tells-supreme-court-in-affidavit-on-plea-against-cec-10398624.html",
+     "outlet": "news18",
+     "title": "‘All SIR Orders Were Unanimous, Form 6 Not Amended’: EC Tells Supreme Court On Plea Against CEC",
+     "ok": true
+    },
+    {
+     "link": "https://www.livemint.com/news/india/sir-controversy-election-commission-says-all-three-members-approved-orders-denies-amending-form-6-11793031937198.html",
+     "outlet": "mint",
+     "title": "SIR controversy: Election Commission says all three members approved orders, denies amending Form 6",
+     "ok": true
+    },
+    {
+     "link": "https://scroll.in/latest/1096664/all-sir-decisions-were-taken-unanimously-ec-tells-supreme-court?utm_source=rss&utm_medium=public",
+     "outlet": "scroll",
+     "title": "All SIR decisions were taken unanimously, EC tells Supreme Court",
+     "ok": true
+    },
+    {
+     "link": "https://timesofindia.indiatimes.com/india/eci-sir-row-supreme-court-defers-hearing-grants-petitioner-10-days-to-reply/articleshow/135227805.cms",
+     "outlet": "toi",
+     "title": "SIR row: Supreme Court defers hearing, grants petitioner 10 days to reply to EC's counter-affidavit",
+     "ok": true
+    },
+    {
+     "link": "https://www.thehindu.com/news/national/cec-can-be-removed-only-like-a-supreme-court-judge-eci-tells-top-court/article71628290.ece",
+     "outlet": "hindu",
+     "title": "CEC can be removed only like a Supreme Court judge, ECI tells top court",
+     "ok": true
+    }
+   ],
+   "originOk": true
+  },
+  {
+   "k": 9,
+   "id": "6a8d076d1e",
+   "headline": "RSS Friends registers under US foreign agent law for outreach",
+   "items": [
+    {
+     "link": "https://www.hindustantimes.com/india-news/new-rss-group-registers-with-justice-dept-to-lobby-in-america-101793214349259.html",
+     "outlet": "ht",
+     "title": "New RSS group registers with justice dept to lobby in America",
+     "ok": true
+    },
+    {
+     "link": "https://www.indiatoday.in/world/story/rss-friends-us-foreign-agent-registration-rss-foreign-principal-ptag-3027330-2026-10-29?utm_source=rss",
+     "outlet": "indiatoday",
+     "title": "RSS Friends registers under US foreign agent law for outreach",
+     "ok": true
+    },
+    {
+     "link": "https://www.thehindu.com/news/international/rss-friends-registers-in-us-to-step-up-outreach-correct-inaccuracies/article71638780.ece",
+     "outlet": "hindu",
+     "title": "‘RSS Friends’ registers in U.S. to step up outreach, correct inaccuracies",
+     "ok": true
+    }
+   ],
+   "originOk": true
+  },
+  {
+   "k": 10,
+   "id": "2d1cc7ec39",
+   "headline": "Tamil Nadu CM Vijay announces bonus, ex gratia for ‘C’ and ‘D’ category employees in public sector undertakings",
+   "items": [
+    {
+     "link": "https://economictimes.indiatimes.com/news/india/labour-ministry-resolves-industrial-dispute-in-bihar-over-10000-employees-to-benefit/articleshow/135229478.cms",
+     "outlet": "et",
+     "title": "Labour ministry resolves industrial dispute in Bihar; over 10,000 employees to benefit",
+     "ok": false
+    },
+    {
+     "link": "https://www.thehindu.com/news/national/tamil-nadu/tamil-nadu-cm-vijay-announces-bonus-ex-gratia-for-c-and-d-category-employees-in-public-sector-undertakings/article71630770.ece",
+     "outlet": "hindu",
+     "title": "Tamil Nadu CM Vijay announces bonus, ex gratia for ‘C’ and ‘D’ category employees in public sector undertakings",
+     "ok": true
+    },
+    {
+     "link": "https://www.livemint.com/news/mint-explainer-who-qualifies-for-the-centre-s-diwali-bonus-and-how-much-will-they-get-11793094734687.html",
+     "outlet": "mint",
+     "title": "Mint Explainer: Who qualifies for the Centre’s Diwali bonus, and how much will they get?",
+     "ok": false
+    }
+   ],
+   "originOk": false
+  },
+  {
+   "k": 11,
+   "id": "ffa0080bd9",
+   "headline": "At least 62 killed and thousands displaced in gunmen attack in Nigeria",
+   "items": [
+    {
+     "link": "https://news.sky.com/story/at-least-62-killed-and-thousands-displaced-in-gunmen-attack-in-northern-nigeria-13604353",
+     "outlet": "sky",
+     "title": "At least 62 killed and thousands displaced in gunmen attack in Nigeria",
+     "ok": true
+    },
+    {
+     "link": "https://www.indiatoday.in/world/story/nigeria-ambush-gunmen-attack-village-taraba-state-dead-injured-police-operations-3026171-2026-10-27?utm_source=rss",
+     "outlet": "indiatoday",
+     "title": "62 killed, 52 injured after gunmen open fire on village in Nigeria",
+     "ok": true
+    },
+    {
+     "link": "https://www.livemint.com/news/world/nigeria-gunmen-attack-kills-62-wounds-52-and-displaces-thousands-in-taraba-state-11793106516767.html",
+     "outlet": "mint",
+     "title": "Nigeria gunmen attack kills 62, wounds 52 and displaces thousands in Taraba state",
+     "ok": true
+    },
+    {
+     "link": "https://timesofindia.indiatimes.com/world/rest-of-world/at-least-62-killed-as-bandit-gunmen-attack-civilians-in-nigeria/articleshow/135235617.cms",
+     "outlet": "toi",
+     "title": "At least 62 killed as 'bandit' gunmen attack civilians in Nigeria",
+     "ok": true
+    },
+    {
+     "link": "https://www.aljazeera.com/news/2026/10/27/death-toll-from-attack-by-gunmen-in-northeastern-nigeria-rises-to-62?traffic_source=rss",
+     "outlet": "aljazeera",
+     "title": "Death toll from attack by gunmen in northeastern Nigeria rises to 62",
+     "ok": true
+    }
+   ],
+   "originOk": true
+  },
+  {
+   "k": 12,
+   "id": "6b189ca7cd",
+   "headline": "Stephen Cloobeck's Beverly Hills mansion searched by FBI in connection with Eric Swalwell probe: Details here",
+   "items": [
+    {
+     "link": "https://www.hindustantimes.com/world-news/us-news/stephen-cloobecks-beverly-hills-mansion-searched-by-fbi-in-connection-with-eric-swalwell-probe-details-here-101793117107121.html",
+     "outlet": "ht",
+     "title": "Stephen Cloobeck's Beverly Hills mansion searched by FBI in connection with Eric Swalwell probe: Details here",
+     "ok": true
+    },
+    {
+     "link": "https://www.theguardian.com/us-news/2026/oct/27/eric-swalwell-investigation-beverly-hills-mansion-searched",
+     "outlet": "guardian",
+     "title": "Federal agents search Beverly Hills mansion tied to ex-congressman Eric Swalwell",
+     "ok": true
+    },
+    {
+     "link": "https://economictimes.indiatimes.com/news/international/world-news/who-is-eric-swalwell-and-what-did-he-dowhy-did-billionaire-stephen-cloobeck-let-him-stay-at-his-california-mansion-before-the-fbi-raid/articleshow/135242996.cms",
+     "outlet": "et",
+     "title": "Who is Eric Swalwell and what did he do?Why did billionaire Stephen Cloobeck let him stay at his California mansion before the FBI raid?",
+     "ok": true
+    }
+   ],
+   "originOk": true
+  },
+  {
+   "k": 13,
+   "id": "87aee4a525",
+   "headline": "Alvin K. Hellerstein, a federal judge who handled Trump, Maduro and 9/11 cases, dies at 92",
+   "items": [
+    {
+     "link": "https://www.scmp.com/news/world/united-states-canada/article/3372488/92-year-old-us-judge-handling-maduro-case-dies",
+     "outlet": "scmp",
+     "title": "92-year-old US judge handling Maduro case dies",
+     "ok": true
+    },
+    {
+     "link": "https://www.livemint.com/news/us-news/alvin-hellerstein-judge-in-maduro-9-11-cases-dies-at-92-11793213915155.html",
+     "outlet": "mint",
+     "title": "Alvin Hellerstein, Judge in Maduro, 9/11 Cases, Dies at 92",
+     "ok": true
+    },
+    {
+     "link": "https://www.france24.com/en/americas/20261028-top-us-federal-judge-who-handled-9-11-trump-maduro-cases-dies-aged-92",
+     "outlet": "france24",
+     "title": "Top US federal judge who handled 9/11, Trump, Maduro cases dies aged 92",
+     "ok": true
+    },
+    {
+     "link": "https://economictimes.indiatimes.com/news/international/world-news/alvin-k-hellerstein-a-federal-judge-who-handled-trump-maduro-and-9/11-cases-dies-at-92/articleshow/135286733.cms",
+     "outlet": "et",
+     "title": "Alvin K. Hellerstein, a federal judge who handled Trump, Maduro and 9/11 cases, dies at 92",
+     "ok": true
+    },
+    {
+     "link": "https://www.ndtv.com/world-news/us-judge-alvin-k-hellerstein-who-presided-over-trump-maduro-9-11-cases-dies-at-92-12251825#publisher=newsstand",
+     "outlet": "ndtv",
+     "title": "US Judge Who Presided Over Trump, Maduro, 9/11 Cases, Dies At 92",
+     "ok": true
+    },
+    {
+     "link": "https://timesofindia.indiatimes.com/world/us/us-judge-alvin-hellerstein-who-handled-maduro-trial-and-trumps-hush-money-case-dies-at-92/articleshow/135290108.cms",
+     "outlet": "toi",
+     "title": "US judge Alvin Hellerstein, who handled Maduro trial, dies at 92",
+     "ok": true
+    }
+   ],
+   "originOk": true
+  },
+  {
+   "k": 14,
+   "id": "a426fb907e",
+   "headline": "SAD-AAP trade barbs on drug menace issue in Punjab",
+   "items": [
+    {
+     "link": "https://www.ndtv.com/india-news/amid-akali-bjp-alliance-buzz-aap-steps-up-attack-on-majithia-over-drugs-12249268#publisher=newsstand",
+     "outlet": "ndtv",
+     "title": "Amid Akali-BJP Alliance Buzz, AAP Steps Up Attack On Majithia Over Drugs",
+     "ok": true
+    },
+    {
+     "link": "https://www.news18.com/india/punjab-drug-menace-harpal-cheema-attacks-akali-dal-bjp-over-majithia-chargesheet-ws-lr-10402262.html",
+     "outlet": "news18",
+     "title": "Punjab Drug Menace: Harpal Cheema Attacks Akali Dal, BJP Over Majithia Chargesheet",
+     "ok": true
+    },
+    {
+     "link": "https://www.thehindu.com/news/national/punjab/sad-aap-trade-barbs-on-drug-menace-issue-in-punjab/article71636923.ece",
+     "outlet": "hindu",
+     "title": "SAD-AAP trade barbs on drug menace issue in Punjab",
+     "ok": true
+    }
+   ],
+   "originOk": true
+  },
+  {
+   "k": 15,
+   "id": "eb7a24920c",
+   "headline": "USA: Could a Democrat win a statewide election in Texas?",
+   "items": [
+    {
+     "link": "https://www.news18.com/world/who-is-james-talarico-democrat-who-could-turn-texas-blue-us-midterms-2026-ws-l-10395447.html",
+     "outlet": "news18",
+     "title": "Who Is James Talarico? The Democrat Who Could Turn Texas Blue After 30 Years Of GOP Dominance",
+     "ok": false
+    },
+    {
+     "link": "https://www.france24.com/en/video/20261027-usa-could-a-democrat-win-a-statewide-election-in-texas",
+     "outlet": "france24",
+     "title": "USA: Could a Democrat win a statewide election in Texas?",
+     "ok": false
+    },
+    {
+     "link": "https://economictimes.indiatimes.com/news/international/world-news/trump-returning-to-texas-for-a-high-stakes-push-to-keep-the-state-in-republican-hands/articleshow/135239791.cms",
+     "outlet": "et",
+     "title": "Trump returning to Texas for a high-stakes push to keep the state in Republican hands",
+     "ok": true
+    },
+    {
+     "link": "https://www.hindustantimes.com/world-news/trump-and-talarico-offer-texas-split-screen-with-dueling-rallies-just-miles-apart-101793156637261.html",
+     "outlet": "ht",
+     "title": "Trump and Talarico Offer Texas Split Screen With Dueling Rallies Just Miles Apart",
+     "ok": true
+    },
+    {
+     "link": "https://www.nytimes.com/2026/10/27/us/elections/paxton-talarico-texas-senate-rally-lubbock.html",
+     "outlet": "nyt",
+     "title": "Texas Senate Rivals Converge on Lubbock, With Trump in the Mix",
+     "ok": true
+    }
+   ],
+   "originOk": false
+  },
+  {
+   "k": 16,
+   "id": "d6f39794a4",
+   "headline": "SC seeks Centre’s reply on plea by media association against privacy law",
+   "items": [
+    {
+     "link": "https://scroll.in/latest/1096672/sc-seeks-centres-reply-on-plea-by-media-association-against-privacy-law?utm_source=rss&utm_medium=public",
+     "outlet": "scroll",
+     "title": "SC seeks Centre’s reply on plea by media association against privacy law",
+     "ok": true
+    },
+    {
+     "link": "https://www.livemint.com/news/supreme-court-seeks-centre-s-response-to-publishers-plea-against-data-law-11793087116493.html",
+     "outlet": "mint",
+     "title": "Supreme Court seeks Centre’s response to publishers’ plea against data law",
+     "ok": true
+    },
+    {
+     "link": "https://www.aljazeera.com/news/2026/10/27/media-groups-challenge-indias-privacy-law-at-top-court?traffic_source=rss",
+     "outlet": "aljazeera",
+     "title": "Media groups challenge India’s privacy law at top court",
+     "ok": true
+    }
+   ],
+   "originOk": true
+  },
+  {
+   "k": 17,
+   "id": "6f1652b64f",
+   "headline": "DVAC searches ex-Minister K.N. Nehru’s residence in Tiruchi",
+   "items": [
+    {
+     "link": "https://www.thehindu.com/news/cities/Tiruchirapalli/dvac-launches-search-at-ex-minister-kn-nehrus-residence-in-tiruchi/article71638830.ece",
+     "outlet": "hindu",
+     "title": "DVAC searches ex-Minister K.N. Nehru’s residence in Tiruchi",
+     "ok": true
+    },
+    {
+     "link": "https://www.indiatoday.in/india/video/dvac-raids-kn-nehru-karnataka-congress-sir-rift-kerala-judge-crash-relief-ytvd-3027551-2026-10-29?utm_source=rss",
+     "outlet": "indiatoday",
+     "title": "DVAC Raids KN Nehru, Karnataka Congress SIR Rift, Kerala Judge Crash Relief",
+     "ok": true
+    },
+    {
+     "link": "https://www.hindustantimes.com/india-news/dvac-searches-25-properties-linked-to-dmk-s-kn-nehru-in-chennai-and-trichy-101793264435598.html",
+     "outlet": "ht",
+     "title": "DVAC searches 25 properties linked to DMK’s KN Nehru in Chennai and Trichy",
+     "ok": true
+    }
+   ],
+   "originOk": true
+  },
+  {
+   "k": 18,
+   "id": "277b84e6e0",
+   "headline": "US Iran war: Vance sends letter to Tehran hard-liner in bid to revive peace talks as Trump threatens strikes",
+   "items": [
+    {
+     "link": "https://www.news18.com/world/no-us-strike-on-iran-today-trump-rules-out-new-attack-on-tehran-10397241.html",
+     "outlet": "news18",
+     "title": "‘No US Strike On Iran Today’: Trump Rules Out New Attack On Tehran",
+     "ok": false
+    },
+    {
+     "link": "https://www.livemint.com/news/world/a-pause-before-escalation-why-iran-fears-a-all-out-war-after-us-midterm-polls-as-donald-trump-weighs-his-next-move-11793035955744.html",
+     "outlet": "mint",
+     "title": "A pause before escalation? Why Iran fears a all-out war after US midterm polls as Donald Trump weighs his next move",
+     "ok": false
+    },
+    {
+     "link": "https://www.hindustantimes.com/world-news/trump-says-never-liked-pakistan-brokered-iran-peace-deal-tehran-hits-back-101793173318986.html",
+     "outlet": "ht",
+     "title": "Trump says ‘never liked’ Pakistan-brokered Iran peace deal, Tehran hits back",
+     "ok": false
+    },
+    {
+     "link": "https://timesofindia.indiatimes.com/world/us/vance-sends-letter-to-iran-hard-liner-in-bid-to-revive-peace-talks-as-trump-threatens-strikes-report/articleshow/135280661.cms",
+     "outlet": "toi",
+     "title": "Vance tests diplomatic route to Iran as Trump weighs escalation",
+     "ok": true
+    },
+    {
+     "link": "https://www.aljazeera.com/news/liveblog/2026/10/29/iran-war-live-tehran-presses-7-day-hormuz-plan-trump-denies-peace-talks?traffic_source=rss",
+     "outlet": "aljazeera",
+     "title": "Iran war live: Tehran presses 7-day Hormuz plan; Trump denies peace talks",
+     "ok": true
+    },
+    {
+     "link": "https://www.indiatoday.in/world/story/jd-vance-reaches-out-to-iran-hard-liner-as-trump-weighs-fresh-strikes-report-3027326-2026-10-29?utm_source=rss",
+     "outlet": "indiatoday",
+     "title": "Vance reaches out to Iran hardliner amid Trump's strike threat: Report",
+     "ok": true
+    },
+    {
+     "link": "https://economictimes.indiatimes.com/news/international/world-news/us-iran-war-jd-vance-sends-letter-to-tehran-hard-liner-in-bid-to-revive-peace-talks-as-trump-threatens-strikes-mohsen-rezaei-donald-trump/articleshow/135284989.cms",
+     "outlet": "et",
+     "title": "US Iran war: Vance sends letter to Tehran hard-liner in bid to revive peace talks as Trump threatens strikes",
+     "ok": true
+    },
+    {
+     "link": "https://www.nytimes.com/2026/10/28/us/politics/vance-peace-talks-letter-iran.html",
+     "outlet": "nyt",
+     "title": "Vance Proposes Restarting Peace Talks in Outreach to Iranian Official",
+     "ok": true
+    },
+    {
+     "link": "https://www.ndtv.com/world-news/trump-says-jd-vance-wanted-to-help-iran-with-medical-supplies-i-said-ok-12251464#publisher=newsstand",
+     "outlet": "ndtv",
+     "title": "\"I Said Ok\": Trump Says JD Vance Wanted To Help Iran With Medical Supplies",
+     "ok": false
+    }
+   ],
+   "originOk": false
+  },
+  {
+   "k": 19,
+   "id": "c4382c53af",
+   "headline": "'We Will Be The Right-Wing Marker': Itamar Ben-Gvir On Forming Government",
+   "items": [
+    {
+     "link": "https://www.foxnews.com/world/who-itamar-ben-gvir-israeli-firebrand-rising-populist-right-across-globe",
+     "outlet": "fox",
+     "title": "Who is Itamar Ben-Gvir, the Israeli firebrand rising with the populist right across the globe?",
+     "ok": true
+    },
+    {
+     "link": "https://www.indiatoday.in/world/video/we-will-be-the-right-wing-marker-itamar-ben-gvir-on-forming-government-ytvd-3025993-2026-10-27?utm_source=rss",
+     "outlet": "indiatoday",
+     "title": "'We Will Be The Right-Wing Marker': Itamar Ben-Gvir On Forming Government",
+     "ok": true
+    },
+    {
+     "link": "https://www.nytimes.com/2026/10/27/world/middleeast/israel-election-ben-gvir-smotrich.html",
+     "outlet": "nyt",
+     "title": "Itamar Ben-Gvir and Bezalel Smotrich Diverge in Israel’s Election",
+     "ok": false
+    }
+   ],
+   "originOk": true
+  },
+  {
+   "k": 20,
+   "id": "3cc1d43d2c",
+   "headline": "\"Working To Fix This\": YouTube After Thousands Of Users Face Outage In US",
+   "items": [
+    {
+     "link": "https://economictimes.indiatimes.com/news/international/world-news/youtube-outage-thousands-of-users-reportedly-facing-problems-reports-claim-issues-with-google-search-and-gmail-too/articleshow/135271429.cms",
+     "outlet": "et",
+     "title": "YouTube Outage: Thousands of users reportedly facing problems, reports claim issues with Google Search and Gmail too",
+     "ok": true
+    },
+    {
+     "link": "https://www.ndtv.com/world-news/working-to-fix-this-youtube-after-thousands-of-users-face-outage-in-us-12250312#publisher=newsstand",
+     "outlet": "ndtv",
+     "title": "\"Working To Fix This\": YouTube After Thousands Of Users Face Outage In US",
+     "ok": true
+    },
+    {
+     "link": "https://www.news18.com/world/youtube-down-thousands-of-users-report-outage-in-us-company-says-aware-and-working-to-fix-ws-l-10402251.html",
+     "outlet": "news18",
+     "title": "YouTube Down: Thousands Of Users Report Outage In US, Company Says 'Aware And Working To Fix'",
+     "ok": true
+    }
+   ],
+   "originOk": true
+  },
+  {
+   "k": 21,
+   "id": "ecc0d43e85",
+   "headline": "Elon Musk Spends Over $442 Million Backing Republicans Ahead Of US Midterms",
+   "items": [
+    {
+     "link": "https://www.news18.com/world/elon-musk-spends-over-442-million-backing-republicans-ahead-of-us-midterms-10396280.html",
+     "outlet": "news18",
+     "title": "Elon Musk Spends Over $442 Million Backing Republicans Ahead Of US Midterms",
+     "ok": true
+    },
+    {
+     "link": "https://www.ndtv.com/world-news/with-3-6-million-a-day-elon-musk-is-biggest-donor-in-us-midterm-elections-12242045#publisher=newsstand",
+     "outlet": "ndtv",
+     "title": "Elon Musk-US Elections: With $3.6 Million A Day, Elon Musk Is Biggest Donor In US Midterm Elections",
+     "ok": true
+    },
+    {
+     "link": "https://timesofindia.indiatimes.com/world/us/us-mid-term-elections/news/445-million-and-counting-elon-musk-goes-all-in-for-republicans-ahead-of-us-midterms/articleshow/135229993.cms",
+     "outlet": "toi",
+     "title": "$445 million and counting: Musk goes all in for Republicans ahead of US midterms",
+     "ok": true
+    }
+   ],
+   "originOk": true
+  },
+  {
+   "k": 22,
+   "id": "3d64f4d2f9",
+   "headline": "Over 40,000 DHS employees' details leaked by hackers; undercover agents exposed",
+   "items": [
+    {
+     "link": "https://economictimes.indiatimes.com/news/international/world-news/leak-website-releases-data-on-thousands-of-us-homeland-security-employees/articleshow/135285048.cms",
+     "outlet": "et",
+     "title": "41,000 US Homeland Security employee names leaked in major hack",
+     "ok": true
+    },
+    {
+     "link": "https://www.theguardian.com/us-news/2026/oct/28/homeland-security-data-leak",
+     "outlet": "guardian",
+     "title": "Non-profit group leaks data of more than 40,000 homeland security workers",
+     "ok": true
+    },
+    {
+     "link": "https://www.bbc.co.uk/news/articles/cq8jzkpjr28vo?at_medium=RSS&at_campaign=rss",
+     "outlet": "bbc",
+     "title": "Details of thousands of US immigration agents leaked in major hack",
+     "ok": true
+    },
+    {
+     "link": "https://www.npr.org/2026/10/28/nx-s1-6021497/dhs-hack-ice",
+     "outlet": "npr",
+     "title": "Hackers expose the identities of more than 40,000 DHS employees",
+     "ok": true
+    },
+    {
+     "link": "https://www.foxnews.com/us/dhs-investigates-massive-data-breach-exposing-40000-employees-including-ice-border-patrol-agents",
+     "outlet": "fox",
+     "title": "DHS investigates massive data breach exposing 40,000 employees, including ICE and Border Patrol agents",
+     "ok": true
+    },
+    {
+     "link": "https://www.hindustantimes.com/world-news/us-news/over-40-000-dhs-employees-details-leaked-by-hackers-undercover-agents-exposed-101793257955016.html",
+     "outlet": "ht",
+     "title": "Over 40,000 DHS employees' details leaked by hackers; undercover agents exposed",
+     "ok": true
+    }
+   ],
+   "originOk": true
+  },
+  {
+   "k": 23,
+   "id": "5571d1c872",
+   "headline": "Russell Brand told police he never had non-consensual sex",
+   "items": [
+    {
+     "link": "https://www.bbc.co.uk/news/articles/cm74p7w4dwpko?at_medium=RSS&at_campaign=rss",
+     "outlet": "bbc",
+     "title": "Russell Brand told police he never had non-consensual sex",
+     "ok": true
+    },
+    {
+     "link": "https://www.theguardian.com/uk-news/2026/oct/27/russell-brand-told-police-he-led-very-promiscuous-life",
+     "outlet": "guardian",
+     "title": "Russell Brand told police he led a ‘very promiscuous’ life, trial hears",
+     "ok": true
+    },
+    {
+     "link": "https://www.abc.net.au/news/2026-10-29/russell-brand-defence-case-begins/107321010",
+     "outlet": "abc",
+     "title": "Russell Brand tells jury friends won't defend him over sex crime allegations",
+     "ok": true
+    }
+   ],
+   "originOk": true
+  },
+  {
+   "k": 24,
+   "id": "d01c9173c3",
+   "headline": "US Fed holds interest rates steady despite surging inflation",
+   "items": [
+    {
+     "link": "https://www.hindustantimes.com/world-news/us-news/us-treasury-yields-hold-steady-ahead-of-fed-rate-decision-pce-inflation-data-and-key-us-economic-reports-this-week-101793023833136.html",
+     "outlet": "ht",
+     "title": "US Treasury yields hold steady ahead of fed rate decision, PCE inflation data and key US economic reports this week",
+     "ok": false
+    },
+    {
+     "link": "https://www.abc.net.au/news/2026-10-28/inflation-september-cpi-ahead-of-november-interest-rate-call/107317382",
+     "outlet": "abc",
+     "title": "Inflation surges more than expected ahead of RBA meeting",
+     "ok": false
+    },
+    {
+     "link": "https://www.theguardian.com/australia-news/2026/oct/28/inflation-rate-australia-2026-number-data-consumer-price-index-cpi-release",
+     "outlet": "guardian",
+     "title": "Australia’s inflation rate rises to 4.3%, fuelling fears of fifth interest rate hike this year",
+     "ok": false
+    },
+    {
+     "link": "https://www.thehindu.com/news/international/federal-reserve-likely-to-skip-rate-hike-despite-elevated-inflation/article71634402.ece",
+     "outlet": "hindu",
+     "title": "Federal Reserve likely to skip rate hike despite elevated inflation",
+     "ok": false
+    },
+    {
+     "link": "https://www.aljazeera.com/economy/2026/10/28/bank-of-canada-raises-interest-rates-for-the-first-time-in-three-years?traffic_source=rss",
+     "outlet": "aljazeera",
+     "title": "Bank of Canada raises interest rates for the first time in three years",
+     "ok": false
+    },
+    {
+     "link": "https://economictimes.indiatimes.com/news/international/world-news/kevin-warsh-live-fed-chair-speaks-on-interest-rates-amid-midterm-elections-rising-fuel-prices/videoshow/135277646.cms",
+     "outlet": "et",
+     "title": "Kevin Warsh LIVE | Fed Chair speaks on interest rates amid midterm elections & rising fuel prices",
+     "ok": true
+    },
+    {
+     "link": "https://www.scmp.com/news/world/united-states-canada/article/3372489/us-fed-holds-interest-rates-steady-despite-surging-inflation",
+     "outlet": "scmp",
+     "title": "US Fed holds interest rates steady despite surging inflation",
+     "ok": true
+    },
+    {
+     "link": "https://www.news18.com/world/us-fed-holds-key-rate-at-3-9-despite-elevated-inflation-gives-little-hint-on-next-move-ws-l-10402290.html",
+     "outlet": "news18",
+     "title": "US Fed Holds Key Rate At 3.9% Despite Elevated Inflation, Gives Little Hint On Next Move",
+     "ok": true
+    },
+    {
+     "link": "https://news.sky.com/story/us-federal-reserve-holds-interest-rates-ahead-of-possible-bank-of-england-hike-13605142",
+     "outlet": "sky",
+     "title": "US makes interest rate decision - as Bank of England verdict looms",
+     "ok": true
+    }
+   ],
+   "originOk": false
+  },
+  {
+   "k": 25,
+   "id": "c1ab075079",
+   "headline": "‘India Is Very Strong’: Arunachal Minister 'Dhurandhar' Recommendation After ITBP Chief’s China Remarks",
+   "items": [
+    {
+     "link": "https://economictimes.indiatimes.com/news/india/watch-dhurandhar-arunachal-minister-balo-raja-reacts-to-itbp-dgs-india-china-warfare-remarks/videoshow/135263096.cms",
+     "outlet": "et",
+     "title": "‘Watch Dhurandhar’: Arunachal Minister Balo Raja reacts to ITBP DG’s India-China warfare remarks",
+     "ok": true
+    },
+    {
+     "link": "https://timesofindia.indiatimes.com/india/india-is-very-strong-watch-dhurandhar-arunachal-minister-on-itbp-chiefs-remarks-on-china-border/articleshow/135265274.cms",
+     "outlet": "toi",
+     "title": "'India is very strong, watch Dhurandhar': Arunachal minister on ITBP chief's remarks on China border",
+     "ok": true
+    },
+    {
+     "link": "https://www.news18.com/india/india-is-very-strong-arunachal-minister-dhurandhar-recommendation-after-itbp-chiefs-china-remarks-ws-l-10401939.html",
+     "outlet": "news18",
+     "title": "‘India Is Very Strong’: Arunachal Minister 'Dhurandhar' Recommendation After ITBP Chief’s China Remarks",
+     "ok": true
+    }
+   ],
+   "originOk": true
+  },
+  {
+   "k": 26,
+   "id": "2742980eea",
+   "headline": "Arsenal knocked out of League Cup by fourth-tier Fleetwood Town",
+   "items": [
+    {
+     "link": "https://www.abc.net.au/news/2026-10-28/arsenal-eliminated-efl-league-cup-fleetwood-town/107317536",
+     "outlet": "abc",
+     "title": "Arsenal knocked out of League Cup by fourth-tier minnow in all-time upset",
+     "ok": true
+    },
+    {
+     "link": "https://www.bbc.co.uk/sport/football/articles/cq62y7yzjdmzo?at_medium=RSS&at_campaign=rss",
+     "outlet": "bbc",
+     "title": "Where does Fleetwood beating Arsenal rank in biggest cup upsets?",
+     "ok": true
+    },
+    {
+     "link": "https://www.aljazeera.com/sports/2026/10/28/arsenal-fleetwood-town-league-cup-penalties-guimaraes-dowman?traffic_source=rss",
+     "outlet": "aljazeera",
+     "title": "Arsenal knocked out of League Cup by fourth-tier Fleetwood Town",
+     "ok": true
+    }
+   ],
+   "originOk": true
+  },
+  {
+   "k": 27,
+   "id": "65c8bdd5ab",
+   "headline": "Mumbai Airport Network Glitch Disrupts IndiGo, Air India Flights; Passengers Face Gate Confusion",
+   "items": [
+    {
+     "link": "https://www.hindustantimes.com/india-news/network-glitch-hits-mumbai-airport-indigo-and-air-india-operations-affected-101793113773565.html",
+     "outlet": "ht",
+     "title": "Mumbai airport network failure delays 18 flights by an hour or more, 3 cancelled",
+     "ok": true
+    },
+    {
+     "link": "https://www.news18.com/india/mumbai-airport-network-glitch-disrupts-indigo-air-india-flights-passengers-face-gate-confusion-ws-r-10400419.html",
+     "outlet": "news18",
+     "title": "Mumbai Airport Network Glitch Disrupts IndiGo, Air India Flights; Passengers Face Gate Confusion",
+     "ok": true
+    },
+    {
+     "link": "https://www.livemint.com/news/mumbai-airport-faces-network-outage-check-in-shifts-to-manual-mode-327-flights-delayed-11793124239765.html",
+     "outlet": "mint",
+     "title": "Mumbai airport faces network outage, check-in shifts to manual mode; 327 flights delayed",
+     "ok": true
+    },
+    {
+     "link": "https://www.ndtv.com/india-news/mumbai-airport-airlines-work-out-plan-to-shift-traffic-to-navi-mumbai-12250714#publisher=newsstand",
+     "outlet": "ndtv",
+     "title": "Mumbai Airport, Airlines Work Out Plan To Shift Traffic To Navi Mumbai",
+     "ok": true
+    }
+   ],
+   "originOk": true
+  },
+  {
+   "k": 28,
+   "id": "cb75be1eb1",
+   "headline": "'Gonna Hijack This': Chilling Message Prompts United Airlines Flight To Land In Las Vegas",
+   "items": [
+    {
+     "link": "https://www.hindustantimes.com/world-news/us-news/united-flight-returns-to-las-vegas-over-hijacking-threat-the-flight-attendant-saw-him-texting-101793018590068.html",
+     "outlet": "ht",
+     "title": "United flight returns to Las Vegas over hijacking threat: ‘The flight attendant saw him texting’",
+     "ok": true
+    },
+    {
+     "link": "https://www.ndtv.com/world-news/united-airlines-flight-returns-to-las-vegas-after-passenger-writes-gonna-hijack-this-plane-message-12244917#publisher=newsstand",
+     "outlet": "ndtv",
+     "title": "'Gonna Hijack This': Chilling Message Prompts United Airlines Flight To Land In Las Vegas",
+     "ok": true
+    },
+    {
+     "link": "https://timesofindia.indiatimes.com/world/us/gonna-hijack-this-plane-crash-ur-row-only-text-for-which-newark-bound-united-airlines-plane-returned-to-las-vegas-revealed/articleshow/135244290.cms",
+     "outlet": "toi",
+     "title": "'Gonna hijack this planẹ...crash ur row only': Text for which Newark-bound United Airlines plane returned to Las Vegas revealed",
+     "ok": true
+    },
+    {
+     "link": "https://www.foxnews.com/us/man-accused-threatening-hijack-united-flight-says-drunken-joke",
+     "outlet": "fox",
+     "title": "Man accused of threatening to hijack United flight says it was a drunken joke",
+     "ok": true
+    }
+   ],
+   "originOk": true
+  },
+  {
+   "k": 29,
+   "id": "0ab06b87c7",
+   "headline": "Cruise ship left stranded in Cambodia after 'soaring fuel costs'",
+   "items": [
+    {
+     "link": "https://economictimes.indiatimes.com/news/international/world-news/200-passengers-lose-their-homes-at-sea-as-us-cruise-ship-ends-global-voyage-amid-rising-fuel-costs/articleshow/135251279.cms",
+     "outlet": "et",
+     "title": "200 passengers lose their homes at sea as US cruise ship ends global voyage amid rising fuel costs",
+     "ok": true
+    },
+    {
+     "link": "https://www.livemint.com/news/a-cruise-ship-was-their-home-now-villa-vie-residents-must-leave-11793165052721.html",
+     "outlet": "mint",
+     "title": "A Cruise Ship Was Their Home. Now Villa Vie Residents Must Leave",
+     "ok": true
+    },
+    {
+     "link": "https://www.ndtv.com/world-news/us-cruise-ship-odyssey-on-world-voyage-stops-after-fuel-prices-surge-villa-vie-residents-12246813#publisher=newsstand",
+     "outlet": "ndtv",
+     "title": "US Cruise Ship 'Odyssey' On World Voyage Stops After Fuel Prices Surge",
+     "ok": true
+    },
+    {
+     "link": "https://www.bbc.co.uk/news/articles/cwj342k62exyo?at_medium=RSS&at_campaign=rss",
+     "outlet": "bbc",
+     "title": "Luxury cruise passengers stranded in Cambodia due to soaring fuel costs",
+     "ok": true
+    },
+    {
+     "link": "https://www.npr.org/2026/10/28/nx-s1-6020180/us-cruise-ship-ends-voyage-passengers-lose-homes",
+     "outlet": "npr",
+     "title": "A U.S. cruise ship ends voyage due to fuel costs and passengers lose their homes",
+     "ok": true
+    },
+    {
+     "link": "https://www.abc.net.au/news/2026-10-28/cruise-passengers-stranded-after-fuel-prices-tanks-operator/107320706",
+     "outlet": "abc",
+     "title": "Hundreds stranded as 'cruise for life' operator goes bust over fuel costs",
+     "ok": true
+    },
+    {
+     "link": "https://news.sky.com/story/cruise-ship-mv-odyssey-stranded-in-cambodia-after-soaring-fuel-costs-13604720",
+     "outlet": "sky",
+     "title": "Cruise ship left stranded in Cambodia after 'soaring fuel costs'",
+     "ok": true
+    },
+    {
+     "link": "https://www.scmp.com/news/asia/southeast-asia/article/3372472/cruise-ship-suspends-global-voyage-cambodia-over-fuel-prices-hundreds-disembark",
+     "outlet": "scmp",
+     "title": "Cruise ship suspends global voyage in Cambodia over fuel prices, hundreds disembark",
+     "ok": true
+    },
+    {
+     "link": "https://www.theguardian.com/travel/2026/oct/28/cruise-passengers-stranded-cambodia-suspends-operations",
+     "outlet": "guardian",
+     "title": "Passengers stranded in Cambodia after cruise halted due to high fuel costs",
+     "ok": true
+    },
+    {
+     "link": "https://www.aljazeera.com/news/2026/10/28/fuel-costs-force-us-cruise-ship-to-suspend-multi-year-voyage-in-cambodia?traffic_source=rss",
+     "outlet": "aljazeera",
+     "title": "Fuel costs force US cruise ship to suspend multiyear voyage in Cambodia",
+     "ok": true
+    },
+    {
+     "link": "https://www.nytimes.com/2026/10/28/travel/endless-cruise-suspended-villa-vie-passengers.html",
+     "outlet": "nyt",
+     "title": "An ‘Endless’ Cruise Around the World Is Suspended, Leaving Passengers Stranded",
+     "ok": true
+    },
+    {
+     "link": "https://timesofindia.indiatimes.com/world/rest-of-world/iran-war-fallout-cruise-ship-carrying-permanent-residents-suspends-voyages-over-soaring-fuel-costs/articleshow/135288607.cms",
+     "outlet": "toi",
+     "title": "Fuel costs jump from $1,800 to $8,000: Cruise ship residents forced ashore in Cambodia",
+     "ok": true
+    },
+    {
+     "link": "https://www.indiatoday.in/world/story/us-cruise-mv-odyssey-cruise-suspension-iran-war-fuel-costs-cambodia-3027539-2026-10-29?utm_source=rss",
+     "outlet": "indiatoday",
+     "title": "World voyage hits a wall as ship runs out of fuel in Cambodia, 203 stranded",
+     "ok": true
+    }
+   ],
+   "originOk": true
+  },
+  {
+   "k": 30,
+   "id": "cf037d2b45",
+   "headline": "Air Force Sports Complex Shut: Why was it closed? Is eviction or demolition next? What we know so far",
+   "items": [
+    {
+     "link": "https://www.hindustantimes.com/india-news/iaf-sports-complex-near-pm-residence-shut-till-further-notice-101793178738416.html",
+     "outlet": "ht",
+     "title": "Air Force Sports Complex near PM’s residence in Delhi shut till further notice | HT Exclusive",
+     "ok": true
+    },
+    {
+     "link": "https://www.news18.com/india/air-force-sports-complex-shut-abruptly-outgoing-iaf-chiefs-farewell-event-cancelled-ws-l-10402955.html",
+     "outlet": "news18",
+     "title": "Air Force Sports Complex Shut Abruptly, Outgoing IAF Chief’s Farewell Event Cancelled",
+     "ok": true
+    },
+    {
+     "link": "https://www.livemint.com/news/india/air-force-sports-complex-shut-why-was-it-closed-is-eviction-or-demolition-next-what-we-know-so-far-11793259543387.html",
+     "outlet": "mint",
+     "title": "Air Force Sports Complex Shut: Why was it closed? Is eviction or demolition next? What we know so far",
+     "ok": true
+    }
+   ],
+   "originOk": true
+  },
+  {
+   "k": 31,
+   "id": "c0cf79c484",
+   "headline": "Cyclone Arnab Nears Andhra Coast, Red Alert Issued Ahead Of Landfall",
+   "items": [
+    {
+     "link": "https://www.news18.com/india/cyclone-arnab-andhra-pradesh-landfall-october-28-preparadness-areas-districts-on-alert-ws-l-10397367.html",
+     "outlet": "news18",
+     "title": "Cyclone Arnab To Hit Andhra Coast On Oct 28; State Braces For Extremely Heavy Rainfall | Top Points",
+     "ok": true
+    },
+    {
+     "link": "https://economictimes.indiatimes.com/news/india/cyclone-arnab-intensifies-set-to-hit-andhra-coast-as-andaman-and-nicobar-shuts-schools/articleshow/135213429.cms",
+     "outlet": "et",
+     "title": "Cyclone Arnab intensifies, set to hit Andhra coast as Andaman and Nicobar shuts schools",
+     "ok": true
+    },
+    {
+     "link": "https://www.hindustantimes.com/india-news/mapping-cyclone-arnab-s-trail-from-andhra-to-up-imd-warns-of-heavy-rain-till-oct-30-101793019679451.html",
+     "outlet": "ht",
+     "title": "Mapping Cyclone Arnab’s trail: From Andhra to UP, IMD warns of heavy rain till Oct 30",
+     "ok": true
+    },
+    {
+     "link": "https://www.livemint.com/news/india/cyclone-arnab-tracker-red-alerts-in-andhra-odisha-as-very-severe-storm-nears-coast-landfall-likely-on-oct-28-11793062888123.html",
+     "outlet": "mint",
+     "title": "Cyclone Arnab tracker: Red alerts in Andhra, Odisha as ‘very severe’ storm nears coast; landfall likely on Oct 28",
+     "ok": true
+    },
+    {
+     "link": "https://www.aljazeera.com/news/2026/10/27/india-evacuates-tens-of-thousands-as-very-severe-cyclone-arnab-nears?traffic_source=rss",
+     "outlet": "aljazeera",
+     "title": "India evacuates tens of thousands as ‘very severe’ Cyclone Arnab nears",
+     "ok": true
+    },
+    {
+     "link": "https://www.thehindu.com/news/national/andhra-pradesh/cyclone-arnab-train-services-cancelled-on-october-27-and-28/article71630352.ece",
+     "outlet": "hindu",
+     "title": "Cyclone ‘Arnab’: 64 train services cancelled on October 27 and 28",
+     "ok": true
+    },
+    {
+     "link": "https://www.nytimes.com/2026/10/27/world/asia/india-cyclone-arnab-evacuations-nepal.html",
+     "outlet": "nyt",
+     "title": "India Evacuates Tens of Thousands as Cyclone Arnab Approaches",
+     "ok": true
+    },
+    {
+     "link": "https://www.indiatoday.in/india/video/cyclone-arnab-nears-andhra-coast-red-alert-in-odisha-evacuations-underway-ytvd-3026147-2026-10-27?utm_source=rss",
+     "outlet": "indiatoday",
+     "title": "Cyclone Arnab Nears Andhra Coast; Red Alert in Odisha, Evacuations Underway",
+     "ok": true
+    },
+    {
+     "link": "https://scroll.in/latest/1096686/cyclone-arnab-over-89000-evacuated-ndrf-teams-deployed-ahead-of-andhra-landfall?utm_source=rss&utm_medium=public",
+     "outlet": "scroll",
+     "title": "Cyclone Arnab: Over 89,000 evacuated, NDRF teams deployed ahead of Andhra landfall",
+     "ok": true
+    },
+    {
+     "link": "https://www.ndtv.com/india-news/cyclone-arnab-nears-andhra-pradesh-coast-red-alert-issued-ahead-of-landfall-12244242#publisher=newsstand",
+     "outlet": "ndtv",
+     "title": "Cyclone Arnab Nears Andhra Coast, Red Alert Issued Ahead Of Landfall",
+     "ok": true
+    },
+    {
+     "link": "https://timesofindia.indiatimes.com/india/aviation-ministry-suspends-operations-at-three-andhra-airports-as-cyclone-arnab-intensifies/articleshow/135243430.cms",
+     "outlet": "toi",
+     "title": "Aviation ministry suspends operations at three Andhra airports as Cyclone Arnab intensifies",
+     "ok": true
+    },
+    {
+     "link": "https://www.scmp.com/news/asia/south-asia/article/3372365/100000-evacuated-india-cyclone-arnab-makes-landfall-southeast-coast",
+     "outlet": "scmp",
+     "title": "100,000 evacuated in India as Cyclone Arnab makes landfall on southeast coast",
+     "ok": true
+    },
+    {
+     "link": "https://www.abc.net.au/news/2026-10-29/cyclone-arnab-hits-india-east-coast/107321328",
+     "outlet": "abc",
+     "title": "At least three killed as powerful Cyclone Arnab hits India's east coast",
+     "ok": true
+    }
+   ],
+   "originOk": true
+  },
+  {
+   "k": 32,
+   "id": "f74d4e0647",
+   "headline": "Tamil Nadu Jail Break: 17 inmates escape from Theni sub-jail; Four held, border checks intensified - Top developments",
+   "items": [
+    {
+     "link": "https://www.news18.com/india/tamil-nadu-jailbreak-17-inmates-escape-after-assaulting-guard-1-caught-manhunt-launched-ws-l-10398840.html",
+     "outlet": "news18",
+     "title": "Tamil Nadu Jailbreak: 17 Inmates Escape After Assaulting Guard, 1 Caught; Manhunt Launched",
+     "ok": true
+    },
+    {
+     "link": "https://www.livemint.com/news/india/tamil-nadu-jail-break-17-inmates-escape-from-theni-sub-jail-four-held-border-checks-intensified-top-developments-11793067752591.html",
+     "outlet": "mint",
+     "title": "Tamil Nadu Jail Break: 17 inmates escape from Theni sub-jail; Four held, border checks intensified - Top developments",
+     "ok": true
+    },
+    {
+     "link": "https://www.hindustantimes.com/india-news/17-convicts-escape-tamil-nadu-after-claiming-one-of-them-was-suffering-was-epilepsy-theni-inmates-jailbreak-101793070884454.html",
+     "outlet": "ht",
+     "title": "17 convicts escape Tamil Nadu jail after staging epilepsy ruse",
+     "ok": true
+    },
+    {
+     "link": "https://www.indiatoday.in/india/video/theni-jailbreak-17-inmates-escape-after-faking-illness-5-held-9-staff-suspended-ytvd-3026086-2026-10-27?utm_source=rss",
+     "outlet": "indiatoday",
+     "title": "Theni Jailbreak: 17 Inmates Escape After Faking Illness, 5 Held, 9 Staff Suspended",
+     "ok": true
+    },
+    {
+     "link": "https://www.thehindu.com/news/national/tamil-nadu/17-remand-prisoners-escape-from-a-sub-jail-in-theni-district-combing-operations/article71629593.ece",
+     "outlet": "hindu",
+     "title": "17 remand prisoners escape from sub-jail in Theni district; 13 held so far",
+     "ok": true
+    },
+    {
+     "link": "https://www.ndtv.com/india-news/jailbreak-in-tamil-nadu-hours-in-dense-forests-then-drones-ended-their-run-12244744#publisher=newsstand",
+     "outlet": "ndtv",
+     "title": "Jailbreak In Tamil Nadu, Hours In Dense Forest, Then Drones Ended Their Run",
+     "ok": true
+    }
+   ],
+   "originOk": true
+  },
+  {
+   "k": 33,
+   "id": "b897acf3b8",
+   "headline": "Netanyahu is in pretty good shape, says Trump as Israel faces coalition deadlock",
+   "items": [
+    {
+     "link": "https://www.hindustantimes.com/world-news/trump-says-netanyahu-is-in-pretty-good-shape-after-horror-reports-of-israeli-election-101793205874648.html",
+     "outlet": "ht",
+     "title": "Trump says Netanyahu is in ‘pretty good shape’ after ‘horror reports’ of Israeli election",
+     "ok": true
+    },
+    {
+     "link": "https://www.indiatoday.in/world/story/netanyahu-is-in-pretty-good-shape-in-elections-trump-as-israel-faces-coalition-deadlock-3027317-2026-10-29?utm_source=rss",
+     "outlet": "indiatoday",
+     "title": "Netanyahu is in pretty good shape, says Trump as Israel faces coalition deadlock",
+     "ok": true
+    },
+    {
+     "link": "https://www.news18.com/world/trump-takes-credit-for-netanyahus-poll-performance-says-hell-take-a-look-at-coalition-talks-ws-l-10402325.html",
+     "outlet": "news18",
+     "title": "Trump Takes Credit For Netanyahu's Poll Performance, Says He'll 'Take A Look' At Coalition Talks",
+     "ok": true
+    }
+   ],
+   "originOk": true
+  },
+  {
+   "k": 34,
+   "id": "0512e9cfc8",
+   "headline": "UP bars those involved in violent ‘regime change’ activities from government jobs",
+   "items": [
+    {
+     "link": "https://www.news18.com/india/keen-on-regime-change-ups-new-rules-may-block-your-government-job-ws-l-10402524.html",
+     "outlet": "news18",
+     "title": "Talking Of ‘Regime Change’? Read UP’s New Rules For Government Jobs",
+     "ok": true
+    },
+    {
+     "link": "https://www.ndtv.com/india-news/yogi-adityanath-protests-no-up-government-jobs-for-those-seeking-violent-regime-change-sp-slams-order-12251953#publisher=newsstand",
+     "outlet": "ndtv",
+     "title": "No UP Government Jobs For Those Seeking 'Violent Regime Change', Samajwadi Slams Order",
+     "ok": true
+    },
+    {
+     "link": "https://www.indiatoday.in/india/story/up-government-jobs-recruitment-policy-bars-violent-protesters-serious-offenders-3027481-2026-10-29?utm_source=rss",
+     "outlet": "indiatoday",
+     "title": "No UP government jobs for those involved in violent protests, states new policy",
+     "ok": true
+    },
+    {
+     "link": "https://scroll.in/latest/1096727/up-bars-those-involved-in-violent-regime-change-activities-from-government-jobs?utm_source=rss&utm_medium=public",
+     "outlet": "scroll",
+     "title": "UP bars those involved in violent ‘regime change’ activities from government jobs",
+     "ok": true
+    }
+   ],
+   "originOk": true
+  },
+  {
+   "k": 35,
+   "id": "a399350d43",
+   "headline": "Saudi Arabia Reopens Riyadh Airport Even as Houthis Threaten Further Strikes",
+   "items": [
+    {
+     "link": "https://www.news18.com/world/india-condemns-attacks-on-saudi-arabia-after-indian-killed-in-deadly-dammam-airport-strike-10393103.html",
+     "outlet": "news18",
+     "title": "India Condemns Attacks On Saudi Arabia After Indian Killed In Deadly Dammam Airport Strike",
+     "ok": false
+    },
+    {
+     "link": "https://www.dw.com/en/saudi-arabia-looks-to-us-for-an-ai-edge-as-yemen-s-houthis-up-pressure/a-79735138?maca=en-rss-en-world-4025-rdf",
+     "outlet": "dw",
+     "title": "Saudi Arabia looks to US for an AI edge as Yemen's Houthis up pressure",
+     "ok": false
+    },
+    {
+     "link": "https://www.nytimes.com/2026/10/25/world/middleeast/saudi-arabia-riyadh-airport-reopens.html",
+     "outlet": "nyt",
+     "title": "Saudi Arabia Reopens Riyadh Airport Even as Houthis Threaten Further Strikes",
+     "ok": true
+    },
+    {
+     "link": "https://www.thehindu.com/news/international/intercepted-missile-after-houthis-hit-riyadh-airport-says-saudi-coalition/article71625586.ece",
+     "outlet": "hindu",
+     "title": "Intercepted missile after Houthis hit Riyadh airport, says Saudi coalition",
+     "ok": true
+    },
+    {
+     "link": "https://www.hindustantimes.com/world-news/egypts-military-support-to-saudi-a-declaration-of-war-houthi-official-101793092267828.html",
+     "outlet": "ht",
+     "title": "Egypt's military support to Saudi a 'declaration of war': Houthi official",
+     "ok": false
+    },
+    {
+     "link": "https://economictimes.indiatimes.com/news/international/world-news/yemens-houthis-say-they-launched-an-attack-on-saudi-ras-tanura-oil-refinery/articleshow/135232208.cms",
+     "outlet": "et",
+     "title": "Yemen's Houthis say they launched an attack on Saudi Ras Tanura oil refinery",
+     "ok": false
+    },
+    {
+     "link": "https://www.livemint.com/news/world/is-saudi-arabia-buying-peace-report-says-riyadh-offers-1-billion-to-houthis-to-seal-iran-brokered-deal-11793099920255.html",
+     "outlet": "mint",
+     "title": "Is Saudi Arabia buying peace? Report says Riyadh offers $1 billion to Houthis to seal Iran-brokered deal",
+     "ok": false
+    },
+    {
+     "link": "https://www.indiatoday.in/world/story/saudi-arabia-1-billion-dollar-offer-to-houthis-pakistan-asim-munir-iran-talks-itspc-3026149-2026-10-27?utm_source=rss",
+     "outlet": "indiatoday",
+     "title": "With Munir at negotiating table, Saudi offers $1 billion to Houthis for peace",
+     "ok": false
+    },
+    {
+     "link": "https://www.ndtv.com/world-news/houthis-claim-missile-strike-on-saudi-oil-refinery-as-blasts-shake-riyadh-12244075#publisher=newsstand",
+     "outlet": "ndtv",
+     "title": "Houthis Claim Missile Strike On Saudi Oil Refinery As Blasts Shake Riyadh",
+     "ok": false
+    }
+   ],
+   "originOk": false
+  },
+  {
+   "k": 36,
+   "id": "650453cca0",
+   "headline": "Iran says US ‘not serious’ about talks amid Tehran meeting",
+   "items": [
+    {
+     "link": "https://www.news18.com/world/mecca-pact-pakistan-saudi-turkey-leaders-set-for-tehran-talks-amid-regional-tensions-ws-l-10397564.html",
+     "outlet": "news18",
+     "title": "Mecca Pact: Pakistan, Saudi, Turkey Leaders Set For Tehran Talks Amid Regional Tensions",
+     "ok": true
+    },
+    {
+     "link": "https://www.thehindu.com/news/international/iran-says-officials-from-saudi-turkiye-pakistan-to-visit-tehran-for-security-talks/article71625846.ece",
+     "outlet": "hindu",
+     "title": "Iran says officials from Saudi, Turkiye, Pakistan to visit Tehran for security talks",
+     "ok": true
+    },
+    {
+     "link": "https://www.aljazeera.com/video/newsfeed/2026/10/27/iran-says-us-not-serious-about-talks-amid-tehran-meeting?traffic_source=rss",
+     "outlet": "aljazeera",
+     "title": "Iran says US ‘not serious’ about talks amid Tehran meeting",
+     "ok": true
+    },
+    {
+     "link": "https://economictimes.indiatimes.com/news/international/world-news/iran-security-chief-meets-supreme-leader-after-talks-with-mecca-pact-countries/articleshow/135234355.cms",
+     "outlet": "et",
+     "title": "Iran security chief meets Supreme Leader after talks with Mecca pact countries",
+     "ok": true
+    },
+    {
+     "link": "https://www.dw.com/en/is-iran-headed-to-war-or-peace-after-mecca-alliance-meeting/a-79788256?maca=en-rss-en-world-4025-rdf",
+     "outlet": "dw",
+     "title": "Is Iran headed to war or peace after Mecca alliance meeting?",
+     "ok": true
+    },
+    {
+     "link": "https://www.ndtv.com/world-news/india-closely-monitoring-tehran-talks-involving-pakistan-says-centre-12250886#publisher=newsstand",
+     "outlet": "ndtv",
+     "title": "India Closely Monitoring Tehran Talks Involving Pakistan, Says Centre",
+     "ok": true
+    },
+    {
+     "link": "https://www.scmp.com/week-asia/politics/article/3372527/why-us-allies-middle-east-are-accelerating-direct-talks-iran",
+     "outlet": "scmp",
+     "title": "Why US allies in Middle East are accelerating direct talks with Iran",
+     "ok": true
+    }
+   ],
+   "originOk": true
+  },
+  {
+   "k": 37,
+   "id": "a07d5b90ae",
+   "headline": "Rajnath Singh, US War Secretary Hegseth review progress of 10-year defence pact",
+   "items": [
+    {
+     "link": "https://www.news18.com/world/pakistan-sends-more-troops-missiles-to-saudi-arabia-under-defence-pact-amid-houthi-threat-ws-l-10397880.html",
+     "outlet": "news18",
+     "title": "Pakistan Sends More Troops, Missiles To Saudi Arabia Under Defence Pact Amid Houthi Threat",
+     "ok": false
+    },
+    {
+     "link": "https://www.indiatoday.in/world/story/turkiye-defence-pact-saudi-arabia-pakistan-clears-parliamentary-committee-ptag-3026304-2026-10-27?utm_source=rss",
+     "outlet": "indiatoday",
+     "title": "Turkish panel backs 10-year defence pact with Saudi Arabia and Pakistan",
+     "ok": false
+    },
+    {
+     "link": "https://www.hindustantimes.com/india-news/rajnath-singh-us-war-secretary-hegseth-review-progress-of-10-year-defence-pact-101793170070945.html",
+     "outlet": "ht",
+     "title": "Rajnath Singh, US War Secretary Hegseth review progress of 10-year defence pact",
+     "ok": true
+    },
+    {
+     "link": "https://www.thehindu.com/news/national/rajnath-singh-pete-hegseth-meeting-india-usa-defence-pact-october-28-2026/article71634844.ece",
+     "outlet": "hindu",
+     "title": "Rajnath raises U.S. F-16 package for Pakistan, cross-border terrorism with Hegseth",
+     "ok": true
+    }
+   ],
+   "originOk": false
+  },
+  {
+   "k": 38,
+   "id": "70eef85642",
+   "headline": "Hello Kitty maker cuts ties with Japanese spy drama after China backlash",
+   "items": [
+    {
+     "link": "https://www.scmp.com/news/china/diplomacy/article/3372526/hello-kitty-owner-sanrio-scraps-japanese-tv-show-vivant-deal-over-china-backlash",
+     "outlet": "scmp",
+     "title": "Hello Kitty owner Sanrio scraps Japanese TV show Vivant deal over China backlash",
+     "ok": true
+    },
+    {
+     "link": "https://www.bbc.co.uk/news/articles/cry4x177jlnyo?at_medium=RSS&at_campaign=rss",
+     "outlet": "bbc",
+     "title": "Hello Kitty maker cuts ties with Japanese spy drama after China backlash",
+     "ok": true
+    },
+    {
+     "link": "https://www.theguardian.com/world/2026/oct/29/hello-kitty-japanese-spy-show-vivant-china-outcry",
+     "outlet": "guardian",
+     "title": "Hello Kitty company cuts ties with Japanese spy show after China outcry",
+     "ok": true
+    }
+   ],
+   "originOk": true
+  },
+  {
+   "k": 39,
+   "id": "bd2c9b6d95",
+   "headline": "Man charged over allegedly false Bondi terror attack injury claim",
+   "items": [
+    {
+     "link": "https://www.abc.net.au/news/2026-10-28/nsw-man-charged-over-bondi-terror-attack-injury-claim/107317020",
+     "outlet": "abc",
+     "title": "Man charged over allegedly false Bondi terror attack injury claim",
+     "ok": true
+    },
+    {
+     "link": "https://www.ndtv.com/world-news/man-arrested-for-falsely-claiming-to-be-australia-bondi-beach-shooting-victim-12246722#publisher=newsstand",
+     "outlet": "ndtv",
+     "title": "Man Arrested For Falsely Claiming To Be Australia Bondi Beach Shooting Victim",
+     "ok": true
+    },
+    {
+     "link": "https://www.indiatoday.in/world/story/sydney-hanukkah-massacre-false-injury-compensation-fraud-charge-ptag-3026880-2026-10-28?utm_source=rss",
+     "outlet": "indiatoday",
+     "title": "Man charged over false injury claim in Sydney Hanukkah massacre",
+     "ok": true
+    }
+   ],
+   "originOk": true
+  },
+  {
+   "k": 40,
+   "id": "4c1baaf1e9",
+   "headline": "'Don't worry about police, lathis': Rahul Gandhi asks people to join ‘Chalo Dilli Ramlila March’ on November 1",
+   "items": [
+    {
+     "link": "https://www.news18.com/india/dont-worry-about-lathis-come-with-us-rahul-gandhi-renews-chalo-dilli-call-ahead-of-nov-1-march-ws-lrt-10402577.html",
+     "outlet": "news18",
+     "title": "'Don't Worry About Lathis. Come With Us': Rahul Gandhi Renews 'Chalo Dilli' Call Ahead Of Nov 1 March",
+     "ok": true
+    },
+    {
+     "link": "https://timesofindia.indiatimes.com/india/dont-worry-about-lathis-rahul-calls-on-people-to-join-india-blocs-delhi-chalo-march/articleshow/135292996.cms",
+     "outlet": "toi",
+     "title": "'Don't worry about lathis': Rahul calls on people to join INDIA bloc's 'Delhi chalo' march",
+     "ok": true
+    },
+    {
+     "link": "https://www.indiatoday.in/india/video/rahul-gandhi-urges-people-to-join-chalo-dilli-march-at-ramlila-maidan-ytvd-3027517-2026-10-29?utm_source=rss",
+     "outlet": "indiatoday",
+     "title": "Rahul Gandhi Urges People To Join Chalo Dilli March At Ramlila Maidan",
+     "ok": true
+    },
+    {
+     "link": "https://www.hindustantimes.com/india-news/rahul-asks-people-to-join-chalo-dilli-ramlila-march-without-worrying-about-police-batons-101793260536481.html",
+     "outlet": "ht",
+     "title": "'Don't worry about police, lathis': Rahul Gandhi asks people to join ‘Chalo Dilli Ramlila March’ on November 1",
+     "ok": true
+    }
+   ],
+   "originOk": true
+  }
+ ],
+ "split": []
+}

@@ -1,0 +1,7 @@
+{
+  "criterion": "Same as judgements.json.",
+  "reviewed": "2026-10-29",
+  "sample": "40 unseen stories (seed 777) built with PRUNE .3 / ORIGIN_MIN .35, sharing no headline with the tuning set",
+  "wrong": { "2": [0, 1, 2], "3": [1], "5": [2], "6": [3], "10": [0, 2], "15": [0, 1], "18": [0, 1, 2, 8], "19": [2], "24": [0, 1, 2, 3, 4], "35": [0, 1, 4, 5, 6, 7, 8], "37": [0, 1] },
+  "same_event_split": []
+}
