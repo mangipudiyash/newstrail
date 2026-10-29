@@ -6,7 +6,7 @@ import { createHash } from "node:crypto";
 import { OUTLETS } from "./outlets.mjs";
 
 const DATA = new URL("../site/data/", import.meta.url);
-const KEEP_DAYS = 7, SUMMARY = 220;
+const KEEP_DAYS = 28, SUMMARY = 220;             // 28 days of memory: the site analyses the last 7, the archive keeps every week
 const UA = "NewsTrail/1.0 (open-source news-spread tracker; reads public RSS feeds hourly)";
 
 const ENT = { amp: "&", lt: "<", gt: ">", quot: '"', apos: "'", nbsp: " ", rsquo: "’", lsquo: "‘", rdquo: "”", ldquo: "“", ndash: "–", mdash: "—", hellip: "…" };
@@ -41,8 +41,15 @@ async function grab(url) {
 
 const now = Date.now();
 await mkdir(DATA, { recursive: true });
-let old = [];
-try { old = JSON.parse(await readFile(new URL("items.json", DATA), "utf8")).items; } catch {}
+let old = [], prev = {};
+try { prev = JSON.parse(await readFile(new URL("items.json", DATA), "utf8")); old = prev.items; } catch {}
+// when each outlet started being tracked; "first to report" is only fair for stories that broke after ALL outlets were tracked
+const outletStart = { ...(prev.outletStart || {}) };
+for (const i of old) if (!prev.outletStart || prev.outletStart[i.outlet] == null) outletStart[i.outlet] = Math.min(outletStart[i.outlet] ?? Infinity, i.seen);
+for (const o of OUTLETS) outletStart[o.id] ??= now;
+const trackStart = Math.max(...OUTLETS.map(o => outletStart[o.id]));
+const runs = [...(prev.runs || [...new Set(old.map(i => i.seen))].sort((a, b) => a - b)), now].slice(-400);   // when each collection ran — gaps between runs matter for short feeds
+const health = [];
 const items = new Map(old.map(i => [i.id, i]));
 const report = [];
 
@@ -52,9 +59,11 @@ for (let k = 0; k < jobs.length; k += 6) {
   await Promise.all(jobs.slice(k, k + 6).map(async ({ o, sec, url }) => {
     try {
       // keep only headlines that link to the outlet's own site (some old feeds fill up with ads and syndicated junk)
-      const brand = new URL(o.page).hostname.split(".").filter(p => !["www", "news", "edition"].includes(p))[0];
+      const brand = new URL(o.page).hostname.split(".").filter(p => !["www", "news", "edition", "en"].includes(p))[0];
       const got = parse(await grab(url)).filter(g => { try { return new URL(g.link).hostname.split(".").includes(brand); } catch { return false; } });
       let fresh = 0;
+      const ts = got.map(g => Date.parse(g.date)).filter(Number.isFinite);
+      health.push({ outlet: o.id, sec, items: got.length, depthHours: ts.length > 1 ? +((Math.max(...ts) - Math.min(...ts)) / 3.6e6).toFixed(1) : null, ok: true });
       for (const g of got) {
         const id = createHash("sha1").update(g.link.replace(/[?#].*$/, "")).digest("hex").slice(0, 12);
         const pub = Date.parse(g.date);
@@ -64,13 +73,18 @@ for (let k = 0; k < jobs.length; k += 6) {
         fresh++;
       }
       report.push(`${(o.name + " · " + sec).padEnd(32)} ${String(got.length).padStart(4)} items, ${fresh} new`);
-    } catch (e) { report.push(`${(o.name + " · " + sec).padEnd(32)} skipped (${e.message})`); }
+    } catch (e) { report.push(`${(o.name + " · " + sec).padEnd(32)} skipped (${e.message})`); health.push({ outlet: o.id, sec, ok: false, error: e.message }); }
   }));
 }
 
 const cutoff = now - KEEP_DAYS * 864e5;
 const known = new Set(OUTLETS.map(o => o.id));
 const out = [...items.values()].filter(i => i.t >= cutoff && known.has(i.outlet)).sort((a, b) => a.t - b.t);
-await writeFile(new URL("items.json", DATA), JSON.stringify({ updated: now, items: out }));
+await writeFile(new URL("items.json", DATA), JSON.stringify({ updated: now, trackStart, outletStart, runs, items: out }));
+// data health: a feed whose newest-to-oldest span is shorter than the gap between runs can lose stories between runs
+const gaps = runs.slice(1).map((t, i) => (t - runs[i]) / 3.6e6).filter(g => g > .05);
+const typicalGap = gaps.length ? +gaps.sort((a, b) => a - b)[Math.floor(gaps.length * .9)].toFixed(1) : null;   // 90th-percentile gap
+await writeFile(new URL("health.json", DATA), JSON.stringify({ updated: now, trackStart, runs: runs.length, gapP90Hours: typicalGap,
+  feeds: health.map(h => ({ ...h, atRisk: h.ok && h.depthHours != null && typicalGap != null && h.depthHours < typicalGap })) }));
 console.log(report.sort().join("\n"));
 console.log(`\n${out.length} items in the ${KEEP_DAYS}-day window`);
