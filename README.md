@@ -2,7 +2,7 @@
 
 **Live:** https://mangipudiyash.github.io/newstrail/
 
-NewsTrail follows every story across 38 newsrooms in 19 countries and answers four questions no single news site can:
+NewsTrail follows every story across 42 newsrooms in 22 countries and answers four questions no single news site can:
 
 1. **Where did it start?** Which outlet reported it first, and where the event happened.
 2. **How did it spread?** From the first report, to national coverage, to crossing borders, replayed on an animated world map.
@@ -24,7 +24,7 @@ Across all stories, the **Patterns** page shows who breaks news first, how far b
 
 ```
 every hour (GitHub Actions)
-  collect.mjs  → reads the home + world RSS feeds of 38 newsrooms → site/data/items.json   (28-day history, kept in the Actions cache)
+  collect.mjs  → reads the home + world RSS feeds of 42 newsrooms → site/data/items.json   (28-day history, kept in the Actions cache)
   build.mjs    → engine.mjs groups headlines into stories; stats.mjs adds intervals → stories, patterns, compare, weeks/, csv/
   deploy       → GitHub Pages serves site/ as static files
 ```
@@ -44,17 +44,21 @@ No servers, no database, no paid APIs. Visitors' browsers only load NewsTrail's 
 **France:** France 24 · Euronews  
 **Argentina:** Buenos Aires Times  
 **Australia:** ABC Australia  
+**Congo:** Africanews  
+**Egypt:** Egypt Independent  
 **Germany:** DW  
 **Hong Kong:** South China Morning Post  
 **Ireland:** Irish Times  
-**Israel:** Times of Israel  
+**Israel:** Haaretz  
 **Japan:** Japan Times  
-**Kenya:** Nation (Kenya)  
+**Kenya:** The Standard  
 **New Zealand:** RNZ  
+**Nigeria:** Vanguard  
 **Qatar:** Al Jazeera  
-**Saudi Arabia:** Arab News  
 **Singapore:** Straits Times  
 **South Korea:** Korea Herald  
+**UAE:** The National  
+**Uganda:** Daily Monitor  
 **Uruguay:** MercoPress
 
 To add an outlet, add one line to `scripts/outlets.mjs`.
