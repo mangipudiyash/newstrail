@@ -10,7 +10,7 @@ const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 // ── formatting ────────────────────────────────────────────────────────────────────────────────
 const ago = t => { const m = Math.round((Date.now() - t) / 60e3); return m < 60 ? `${Math.max(1, m)}m ago` : m < 1440 ? `${Math.round(m / 60)}h ago` : `${Math.round(m / 1440)}d ago`; };
-const dur = m => m == null ? "—" : m < 1 ? "same minute" : m < 60 ? `${m}m` : m < 1440 ? `${Math.floor(m / 60)}h ${m % 60 ? (m % 60) + "m" : ""}`.trim() : `${Math.floor(m / 1440)}d ${Math.round((m % 1440) / 60)}h`;
+const dur = v => { if (v == null) return "—"; const m = Math.round(v); return m < 1 ? "same minute" : m < 60 ? `${m}m` : m < 1440 ? `${Math.floor(m / 60)}h ${m % 60 ? (m % 60) + "m" : ""}`.trim() : `${Math.floor(m / 1440)}d ${Math.round((m % 1440) / 60)}h`;; };
 const clock = t => new Date(t).toLocaleString([], { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
 const ob = id => `<span class="ob" style="--c:${O[id]?.color || "#888"}"><i></i>${esc(O[id]?.name || id)}</span>`;
 const scopeOf = (id, originId) => id === originId ? "origin" : O[id].country === O[originId].country ? "national" : "international";
@@ -163,6 +163,8 @@ async function story(id) {
     </div>
     ${pre.length ? `<section><div class="sh"><h2>Before the news broke</h2><p>Earlier pieces on the same subject — previews and background. The first report is the start of the burst: the first of three newsrooms within six hours.</p></div>
       <div class="trail">${pre.map(c => `<a class="tr" href="${esc(c.link)}" target="_blank" rel="noopener"><span class="lag">−${dur(-c.lag)}</span>${ob(c.outlet)}<span class="h"><b>${esc(c.title)}</b></span></a>`).join("")}</div></section>` : ""}
+    <div class="story-share">${shareBtn("story")}</div>
+    <section id="evo"></section>
     <section><div class="sh"><h2>The trail</h2><p>Every outlet's first headline, in the order it appeared.</p></div>
       <div class="trail">${s.coverage.map((c, i) => `<a class="tr" id="tr${i}" href="${esc(c.link)}" target="_blank" rel="noopener"><span class="lag ${i ? "" : "o"}">${i ? "+" + dur(c.lag) : "FIRST"}</span>${ob(c.outlet)}<span class="h"><b>${esc(c.title)}</b>${c.summary ? `<small>${esc(c.summary)}</small>` : ""}</span></a>`).join("")}</div>
     </section>
@@ -171,6 +173,7 @@ async function story(id) {
     </section>
   </div>`;
 
+  headlineEvolution(s); storyShare(s);
   const pts = [...s.coverage.map(c => [O[c.outlet].lon, O[c.outlet].lat]), ...(s.epicentre ? [[s.epicentre.lon, s.epicentre.lat]] : [])];
   const m = await makeMap($("#sm"), { width: 1000, height: 625, focus: { type: "MultiPoint", coordinates: pts } });
   m.svg.classed("big", true);
@@ -302,11 +305,12 @@ async function about() {
 async function route() {
   heroStop(); scrollTo(0, 0); document.title = "NewsTrail — watch the news travel";
   const h = location.hash.slice(1) || "/";
-  document.querySelectorAll("nav a").forEach(a => a.classList.toggle("on", a.dataset.r === (h.startsWith("/patterns") ? "patterns" : h.startsWith("/compare") ? "compare" : h.startsWith("/about") ? "about" : "home")));
+  document.querySelectorAll("nav a").forEach(a => a.classList.toggle("on", a.dataset.r === (h.startsWith("/patterns") ? "patterns" : h.startsWith("/week") ? "week" : h.startsWith("/compare") ? "compare" : h.startsWith("/about") ? "about" : "home")));
   try {
     if (h.startsWith("/s/")) await story(h.slice(3));
     else if (h.startsWith("/patterns")) await patterns();
     else if (h.startsWith("/compare")) await compare();
+    else if (h.startsWith("/week")) await week(h.split("/")[2]);
     else if (h.startsWith("/about")) await about();
     else await home();
   } catch (e) { console.error(e); app.innerHTML = `<div class="wrap empty">That story has moved on — it's no longer in the 7-day window. <a href="#/">See what's spreading now →</a></div>`; }
