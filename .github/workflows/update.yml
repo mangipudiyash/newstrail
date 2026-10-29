@@ -2,13 +2,13 @@ name: Update NewsTrail
 
 on:
   schedule:
-    - cron: "23 * * * *"      # every hour
-  workflow_dispatch:          # "Run workflow" button
+    - cron: "7,27,47 * * * *"   # every 20 minutes — GitHub often delays scheduled runs, so we ask often
+  workflow_dispatch:            # "Run workflow" button
   push:
     branches: [main]
 
 permissions:
-  contents: read
+  contents: write               # to save completed weeks into archive/
   pages: write
   id-token: write
 
@@ -28,7 +28,7 @@ jobs:
         with:
           node-version: 20
 
-      # keep the rolling 7-day headline history between runs, so a story's first report is never forgotten
+      # 28 days of headline history live in the Actions cache between runs
       - name: Restore history
         uses: actions/cache/restore@v4
         with:
@@ -36,9 +36,13 @@ jobs:
           key: newstrail-items-${{ github.run_id }}
           restore-keys: newstrail-items-
 
+      # weeks already archived are served as they were published (never recomputed)
+      - name: Restore weekly archive
+        run: mkdir -p site/data/weeks && cp archive/weeks/*.json site/data/weeks/ 2>/dev/null || true
+
       - name: Collect headlines
         run: node scripts/collect.mjs
-      - name: Build stories and patterns
+      - name: Build stories, patterns and statistics
         run: node scripts/build.mjs
 
       - name: Save history
@@ -46,6 +50,20 @@ jobs:
         with:
           path: site/data/items.json
           key: newstrail-items-${{ github.run_id }}
+
+      - name: Archive completed weeks
+        run: |
+          mkdir -p archive/weeks
+          new=0
+          for f in site/data/weeks/20*.json; do
+            [ -e "$f" ] || continue
+            b=$(basename "$f"); [ -f "archive/weeks/$b" ] || { cp "$f" "archive/weeks/$b"; new=1; }
+          done
+          if [ "$new" = 1 ]; then
+            git config user.name "newstrail-bot"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add archive/weeks && git commit -m "Archive completed week(s)" && git pull --rebase && git push
+          fi
 
       - uses: actions/upload-pages-artifact@v3
         with:
