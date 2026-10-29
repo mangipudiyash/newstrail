@@ -24,6 +24,11 @@ await writeFile(new URL("stories.json", DATA), JSON.stringify({ updated, stories
 await writeFile(new URL("patterns.json", DATA), JSON.stringify(cur.patterns));
 await writeFile(new URL("compare.json", DATA), JSON.stringify(cur.compare));
 await writeFile(new URL("outlets.json", DATA), JSON.stringify(OUTLETS.map(({ feeds, ...o }) => o)));
+// head-to-head: a compact copy of every story's coverage, so any two outlets can be compared in the browser.
+// cov rows: [outlet, minutes after first report, tone, frames, headline]; precursor ("before the news broke") rows are left out.
+await writeFile(new URL("h2h.json", DATA), JSON.stringify({ updated, outletStart: raw.outletStart || {}, trackStart: TRACK_START,
+  stories: cur.stories.map(s => ({ id: s.id, h: s.headline, c: s.confident ? 1 : 0, t0: s.first,
+    cov: s.coverage.filter(c => !c.before).map(c => [c.outlet, c.lag, c.tone, c.frames.join("|"), c.title]) })) }));
 
 // ── open data (no headline text — links, times and measurements only) ─────────────────────────────────────
 const csv = rows => rows.map(r => r.map(v => v == null ? "" : /[",\n]/.test(String(v)) ? `"${String(v).replace(/"/g, '""')}"` : v).join(",")).join("\n") + "\n";
