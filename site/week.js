@@ -70,6 +70,8 @@ function wireShare(specs) { document.querySelectorAll("[data-share]").forEach(b 
 function reveal(root) {
   const count = el => { const to = +el.dataset.count, dec = +(el.dataset.dec || 0), suf = el.dataset.suf || "", t0 = performance.now(), D = reduce ? 1 : 1400;
     const step = now => { const k = Math.min(1, (now - t0) / D), e = 1 - Math.pow(1 - k, 3); el.textContent = (to * e).toLocaleString(undefined, { minimumFractionDigits: dec, maximumFractionDigits: dec }) + suf; if (k < 1) requestAnimationFrame(step); }; requestAnimationFrame(step); };
+  // until a number scrolls into view it shows its true value (for screenshots, link previews and screen readers)
+  root.querySelectorAll("[data-count]").forEach(el => { const dec = +(el.dataset.dec || 0); el.textContent = (+el.dataset.count).toLocaleString(undefined, { minimumFractionDigits: dec, maximumFractionDigits: dec }) + (el.dataset.suf || ""); });
   const io = new IntersectionObserver(es => es.forEach(e => { if (!e.isIntersecting) return; e.target.classList.add("in"); e.target.querySelectorAll("[data-count]").forEach(count); e.target.dispatchEvent(new Event("reveal")); io.unobserve(e.target); }), { threshold: .25 });
   root.querySelectorAll(".rv").forEach(s => io.observe(s));
 }
