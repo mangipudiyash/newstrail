@@ -40,12 +40,19 @@ await writeFile(new URL("csv/headline-countries.csv", DATA), csv([["outlet", "ou
 const monday = t => { const d = new Date(t); d.setUTCHours(0, 0, 0, 0); d.setUTCDate(d.getUTCDate() - ((d.getUTCDay() + 6) % 7)); return d.getTime(); };
 const weekId = t => { const d = new Date(t + 3 * D), y = d.getUTCFullYear(), j1 = Date.UTC(y, 0, 4), w = 1 + Math.round(((t - monday(j1)) / D) / 7); return `${y}-W${String(w).padStart(2, "0")}`; };
 await mkdir(new URL("weeks/", DATA), { recursive: true });
-const have = new Set((await readdir(new URL("weeks/", DATA)).catch(() => [])).filter(f => /^\d{4}-W\d{2}\.json$/.test(f)).map(f => f.slice(0, 8)));
+const firstRun = raw.runs?.length ? Math.min(...raw.runs) : TRACK_START;     // when collection actually started
+const have = new Set();
+for (const f of (await readdir(new URL("weeks/", DATA)).catch(() => [])).filter(f => /^\d{4}-W\d{2}\.json$/.test(f))) {
+  const w = JSON.parse(await readFile(new URL(`weeks/${f}`, DATA), "utf8"));
+  if (w.to <= firstRun) { await rm(new URL(`weeks/${f}`, DATA)); continue; }    // a week that ended before collection began is not a real week
+  have.add(f.slice(0, 8));
+}
 const earliest = Math.min(...ALL.map(i => i.t));
 for (let w = monday(earliest + 3 * D) + 7 * D; w + 7 * D <= latest; w += 7 * D) {
+  if (w + 7 * D <= firstRun) continue;                                           // ended before we were collecting: feed back-catalogue only, not a real week
   const id = weekId(w); if (have.has(id)) continue;                              // archived weeks are never recomputed
   const r = analyze(w, w + 7 * D, { quiet: true });
-  await writeFile(new URL(`weeks/${id}.json`, DATA), JSON.stringify({ week: id, from: w, to: w + 7 * D, partial: w < TRACK_START,
+  await writeFile(new URL(`weeks/${id}.json`, DATA), JSON.stringify({ week: id, from: w, to: w + 7 * D, partial: w < firstRun,
     patterns: { ...r.patterns, outlets: r.patterns.outlets }, compare: { ...r.compare, outlets: undefined, countries: undefined },
     top: r.stories.slice(0, 10).map(s => ({ id: s.id, headline: s.headline, outlets: s.outlets, countries: s.countries, first: s.first, origin: s.origin.outlet })) }));
   have.add(id); console.log("archived", id, w < TRACK_START ? "(partial: began before tracking)" : "");
