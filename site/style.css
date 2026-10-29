@@ -158,6 +158,17 @@ section{padding:44px 0}
 footer{border-top:1px solid var(--line);padding:30px 0 50px;color:var(--dim);font-size:13px}
 .empty{padding:60px 0;text-align:center;color:var(--mute)}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-delay:0s!important;transition:none!important}}
+/* uncertainty */
+.wb{position:relative;overflow:visible}
+.wb u{position:absolute;top:50%;height:2px;margin-top:-1px;background:var(--ink);opacity:.7;text-decoration:none}
+.wb u:before,.wb u:after{content:"";position:absolute;top:-4px;width:2px;height:10px;background:var(--ink)}
+.wb u:before{left:0}.wb u:after{right:0}
+.thin{margin-left:6px;font:500 10px var(--mono);color:#FFB547;border:1px solid #6B5320;border-radius:5px;padding:1px 5px;white-space:nowrap}
+.loose{font:500 11px var(--mono);color:#FFB547;border:1px dashed #6B5320;border-radius:6px;padding:2px 6px}
+.kpi small{display:block;margin-top:6px;font:500 12px var(--mono);color:var(--dim)}
+.stat span{line-height:1.4}
+.strip i.pre{opacity:.7}
+.lb .r{grid-template-columns:150px 1fr 76px}
 /* home vs world */
 .mirror{display:flex;flex-direction:column;gap:10px}
 .mr{display:grid;grid-template-columns:1fr 120px 1fr;gap:10px;align-items:center}

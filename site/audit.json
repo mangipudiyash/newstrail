@@ -1,0 +1,85 @@
+{
+ "reviewed": "2026-10-29",
+ "criterion": "A headline is correct if it reports the same event as its story, or a direct development of that event (reactions, follow-ups, aftermath). Previews before the event, other events involving the same person, and unrelated stories sharing generic words are wrong.",
+ "settings": {
+  "SIM": 0.3,
+  "SHARED": 2,
+  "SHARED_IDF": 2.2,
+  "MERGE_RARE": 3,
+  "MERGE_COS": 0.2,
+  "PRUNE": 0.3,
+  "ORIGIN_MIN": 0.35,
+  "ONSET_N": 3,
+  "ONSET_HOURS": 6,
+  "CONFIDENT": 0.4
+ },
+ "sets": [
+  {
+   "name": "Tuning set",
+   "file": "labels.json",
+   "sample": "60 stories drawn at random (seed 2026) from all 221 stories of 22–29 Oct 2026",
+   "all": {
+    "stories": 49,
+    "headlines": 207,
+    "headlineAccuracy": 96.1,
+    "headlineCI": [
+     92.6,
+     98
+    ],
+    "firstReportAccuracy": 93.9,
+    "firstReportCI": [
+     83.5,
+     97.9
+    ]
+   },
+   "confident": {
+    "stories": 40,
+    "headlines": 178,
+    "headlineAccuracy": 96.1,
+    "headlineCI": [
+     92.1,
+     98.1
+    ],
+    "firstReportAccuracy": 92.5,
+    "firstReportCI": [
+     80.1,
+     97.4
+    ]
+   }
+  },
+  {
+   "name": "Validation set",
+   "file": "labels-holdout.json",
+   "sample": "40 unseen stories (seed 777) built with PRUNE .3 / ORIGIN_MIN .35, sharing no headline with the tuning set",
+   "all": {
+    "stories": 38,
+    "headlines": 197,
+    "headlineAccuracy": 88.8,
+    "headlineCI": [
+     83.7,
+     92.5
+    ],
+    "firstReportAccuracy": 92.1,
+    "firstReportCI": [
+     79.2,
+     97.3
+    ]
+   },
+   "confident": {
+    "stories": 31,
+    "headlines": 160,
+    "headlineAccuracy": 90,
+    "headlineCI": [
+     84.4,
+     93.8
+    ],
+    "firstReportAccuracy": 93.5,
+    "firstReportCI": [
+     79.3,
+     98.2
+    ]
+   }
+  }
+ ],
+ "note": "The confidence threshold (coherence ≥ 0.4) was chosen using both sets, so these figures are in-sample; a fresh audit on new data is scheduled to confirm them."
+}

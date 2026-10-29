@@ -3,7 +3,7 @@ const $ = (s, el = document) => el.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const app = $("#app");
 const cache = {};
-const get = p => cache[p] ??= fetch("data/" + p).then(r => { if (!r.ok) throw new Error(p); return r.json(); });
+const get = p => cache[p] ??= fetch("data/" + p, { cache: "no-cache" }).then(r => { if (!r.ok) throw new Error(p); return r.json(); });
 let O = {};                                                     // outlets by id
 const COL = { origin: "#FF5A4E", national: "#2DD4BF", international: "#9B8CFF" };
 const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -14,6 +14,10 @@ const dur = m => m == null ? "—" : m < 1 ? "same minute" : m < 60 ? `${m}m` : 
 const clock = t => new Date(t).toLocaleString([], { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
 const ob = id => `<span class="ob" style="--c:${O[id]?.color || "#888"}"><i></i>${esc(O[id]?.name || id)}</span>`;
 const scopeOf = (id, originId) => id === originId ? "origin" : O[id].country === O[originId].country ? "national" : "international";
+const ci = r => r ? `${r[0]}–${r[1]}%` : "";
+const thin = ok => ok ? "" : `<span class="thin" title="Too few independent stories for a firm number — read as indicative">thin data</span>`;
+// a bar with a 95% interval whisker; v and r in the same units, scaled by max
+const wbar = (v, r, max, c) => `<div class="t wb"><i style="--w:${Math.min(100, v / max * 100)}%;--c:${c}"></i>${r ? `<u style="left:${Math.min(100, r[0] / max * 100)}%;width:${Math.max(.5, Math.min(100, r[1] / max * 100) - Math.min(100, r[0] / max * 100))}%"></u>` : ""}</div>`;
 const toneBar = v => `<span class="tone" title="Headline tone ${v}"><span class="bar" style="--v:${v}"><i></i></span>${v > .15 ? "positive" : v < -.15 ? "negative" : "neutral"}</span>`;
 
 // ── map ───────────────────────────────────────────────────────────────────────────────────────
@@ -45,6 +49,7 @@ const arcD = ([x0, y0], [x1, y1]) => { const dx = x1 - x0, dy = y1 - y0, d = Mat
 const pace = s => { const max = Math.max(1, ...s.coverage.map(c => c.lag)), n = Math.max(1, s.coverage.length - 1); return c => { const i = s.coverage.indexOf(c); return (.5 * i / n + .5 * Math.log1p(c.lag) / Math.log1p(max)) * .9; }; };
 // one story's trail on a map; returns render(u) for u ∈ [0,1]
 function trail(m, s, { labels = true, onHit } = {}) {
+  s = { ...s, coverage: s.coverage.filter(c => !c.before) };                    // replay starts when the news broke
   const u = pace(s);
   const o0 = s.origin.outlet, p0 = m.pos[o0];
   const items = s.coverage.map((c, i) => ({ c, i, u: c.outlet === o0 ? 0 : u(c), kind: scopeOf(c.outlet, o0), p: m.pos[c.outlet] }));
@@ -86,7 +91,7 @@ async function home(filter = "all") {
     <p>NewsTrail follows every story across ${Object.keys(O).length} Indian and international newsrooms — who reported it first, how it spread from local to worldwide, and how each outlet framed it.</p>
     <div class="stats">
       <div class="stat"><b>${pat.stories}</b><span>stories traced</span></div>
-      <div class="stat"><b>${Math.round(pat.crossBorder.share * 100)}%</b><span>crossed borders</span></div>
+      <div class="stat"><b>${Math.round(pat.crossBorder.share)}%</b><span>crossed borders · ${ci(pat.crossBorder.ci)}</span></div>
       <div class="stat"><b>${dur(pat.crossBorder.medianMinutes)}</b><span>median to go global</span></div>
       <div class="stat"><b>${pat.items.toLocaleString()}</b><span>headlines read</span></div>
     </div>
@@ -101,12 +106,12 @@ async function home(filter = "all") {
   heroMap(stories.slice(0, 14));
 }
 function card(s, i) {
-  const max = Math.max(1, ...s.trail.map(t => t[1]));
-  const x = lag => 10 + Math.log1p(lag) / Math.log1p(max) * 80;
+  const after = s.trail.filter(t => t[1] >= 0), max = Math.max(1, ...after.map(t => t[1]));
+  const x = lag => lag < 0 ? 4 : 10 + Math.log1p(lag) / Math.log1p(max) * 80;
   return `<a class="card" style="--i:${i}" href="#/s/${s.id}">
-    <div class="meta"><span class="first">● First</span>${ob(s.origin.outlet)}<span>· ${ago(s.first)}</span></div>
+    <div class="meta"><span class="first">● First</span>${ob(s.origin.outlet)}<span>· ${ago(s.first)}</span>${s.confident ? "" : `<span class="loose" title="Headlines in this story are loosely related; it is not used in the statistics">loosely grouped</span>`}</div>
     <h3>${esc(s.headline)}</h3>
-    <div class="strip"><div class="ax"></div>${s.trail.map(([o, lag], k) => `<i class="${k ? "" : "o"}" title="${esc(O[o].name)} · +${dur(lag)}" style="left:${x(lag)}%;--c:${COL[scopeOf(o, s.origin.outlet)]};--k:${k}"></i>`).join("")}</div>
+    <div class="strip"><div class="ax"></div>${s.trail.map(([o, lag], k) => `<i class="${o === s.origin.outlet && lag === 0 ? "o" : lag < 0 ? "pre" : ""}" title="${esc(O[o].name)} · ${lag < 0 ? "before the news broke" : "+" + dur(lag)}" style="left:${x(lag)}%;--c:${lag < 0 ? "#5B6178" : COL[scopeOf(o, s.origin.outlet)]};--k:${k}"></i>`).join("")}</div>
     <div class="stages">${s.stages.map(st => `<span class="stg ${st.key}">${st.key === "origin" ? "Origin" : esc(st.label)} <b>${st.key === "origin" ? esc(O[st.outlet].name) : "+" + dur(Math.round((st.t - s.first) / 60e3))}</b></span>`).join("")}</div>
     <div class="foot"><span>${s.outlets} outlets · ${s.countries.length} ${s.countries.length > 1 ? "countries" : "country"}${s.epicentre ? " · " + esc(s.epicentre.name) : ""}</span>${toneBar(s.tone.avg)}</div>
   </a>`;
@@ -131,6 +136,7 @@ async function heroMap(top) {
 // ── story ─────────────────────────────────────────────────────────────────────────────────────
 async function story(id) {
   const s = await get(`s/${id}.json`);
+  const pre = s.coverage.filter(c => c.before); s.coverage = s.coverage.filter(c => !c.before);   // the map replays from the moment the news broke
   const o0 = s.origin.outlet, total = Math.max(1, ...s.coverage.map(c => c.lag)), P = pace(s);
   const fsize = sh => `${14 + sh * 22}px`;
   const hl = c => { let h = esc(c.title); for (const w of c.angle) h = h.replace(new RegExp(`\\b(${w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})\\b`, "i"), "<mark>$1</mark>"); return h; };
@@ -138,7 +144,7 @@ async function story(id) {
   app.innerHTML = `<div class="wrap sp">
     <a class="back" href="#/">← All stories</a>
     <h1>${esc(s.headline)}</h1>
-    <div class="meta"><span class="first">● First reported by</span>${ob(o0)}<span>· ${clock(s.first)}</span><span>· ${s.outlets} outlets in ${s.countries.length} ${s.countries.length > 1 ? "countries" : "country"} over ${dur(Math.round(s.span / 60e3))}</span></div>
+    <div class="meta"><span class="first">● First reported by</span>${ob(o0)}<span>· ${clock(s.first)}</span><span>· ${s.outlets} outlets in ${s.countries.length} ${s.countries.length > 1 ? "countries" : "country"} over ${dur(Math.round(s.span / 60e3))}</span>${s.confident ? "" : `<span class="loose">loosely grouped — not used in the statistics</span>`}</div>
     <div class="stage">
       <div class="mapbox" id="sm"><div class="now"><div class="pill" id="np"></div></div>
         <div class="hud"><button class="play" id="pl" aria-label="Replay the spread"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M4 2l10 6-10 6z" fill="currentColor"/></svg></button>
@@ -155,6 +161,8 @@ async function story(id) {
         <div class="bars">${s.frames.slice(0, 5).map((f, k) => `<div class="r" style="--k:${k}"><span>${f.f}</span><div class="t"><i style="--w:${f.n / s.outlets * 100}%"></i></div><span>${f.n}</span></div>`).join("") || `<span class="note">No strong framing signals.</span>`}</div>
       </div>
     </div>
+    ${pre.length ? `<section><div class="sh"><h2>Before the news broke</h2><p>Earlier pieces on the same subject — previews and background. The first report is the start of the burst: the first of three newsrooms within six hours.</p></div>
+      <div class="trail">${pre.map(c => `<a class="tr" href="${esc(c.link)}" target="_blank" rel="noopener"><span class="lag">−${dur(-c.lag)}</span>${ob(c.outlet)}<span class="h"><b>${esc(c.title)}</b></span></a>`).join("")}</div></section>` : ""}
     <section><div class="sh"><h2>The trail</h2><p>Every outlet's first headline, in the order it appeared.</p></div>
       <div class="trail">${s.coverage.map((c, i) => `<a class="tr" id="tr${i}" href="${esc(c.link)}" target="_blank" rel="noopener"><span class="lag ${i ? "" : "o"}">${i ? "+" + dur(c.lag) : "FIRST"}</span>${ob(c.outlet)}<span class="h"><b>${esc(c.title)}</b>${c.summary ? `<small>${esc(c.summary)}</small>` : ""}</span></a>`).join("")}</div>
     </section>
@@ -182,25 +190,28 @@ async function story(id) {
 // ── patterns ──────────────────────────────────────────────────────────────────────────────────
 async function patterns() {
   const p = await get("patterns.json");
-  const broke = p.outlets.filter(o => o.covered).slice(0, 14), mb = Math.max(1, ...broke.map(o => o.broke));
-  const lag = p.outlets.filter(o => o.medianLag != null && o.covered >= 3).sort((a, b) => a.medianLag - b.medianLag), ml = Math.max(1, ...lag.map(o => o.medianLag));
+  const day = t => new Date(t).toLocaleDateString([], { day: "numeric", month: "short" });
+  const ranked = p.outlets.filter(o => o.covered >= 5);
+  const lag = p.outlets.filter(o => o.medianLag != null && o.covered >= 5).sort((a, b) => a.medianLag - b.medianLag), ml = Math.max(1, ...lag.map(o => (o.lagCI || [0, o.medianLag])[1]));
   const fr = p.frames, mf = Math.max(1, ...fr.map(f => f[1]));
-  const row = (label, val, max, txt, c, k) => `<div class="r" style="--k:${k}"><span>${label}</span><div class="t"><i style="--w:${val / max * 100}%;--c:${c}"></i></div><span>${txt}</span></div>`;
+  const row = (label, bar, txt, k, flag = "") => `<div class="r" style="--k:${k}"><span>${label}</span>${bar}<span>${txt}${flag}</span></div>`;
   app.innerHTML = `<section><div class="wrap">
-    <div class="sh"><h2>Patterns in how news spreads</h2><p>Across ${p.stories} stories and ${p.items.toLocaleString()} headlines from the last 7 days.</p></div>
+    <div class="sh"><h2>Patterns in how news spreads</h2><p>${p.stories} stories · ${p.confidentStories} well-grouped stories feed these numbers · ${p.items.toLocaleString()} headlines, ${day(p.from)}–${day(p.to)}. Ranges are 95% intervals.</p></div>
     <div class="kpis">
-      <div class="kpi"><b>${Math.round(p.crossBorder.share * 100)}%</b><span>of stories crossed a border</span></div>
-      <div class="kpi"><b>${dur(p.crossBorder.medianMinutes)}</b><span>median time for a story to reach another country</span></div>
-      <div class="kpi"><b>${dur(p.nationalMedianMinutes)}</b><span>median time until three outlets in the origin country carry it</span></div>
-      <div class="kpi"><b>${p.crossBorder.indiaToWorld} · ${p.crossBorder.worldToIndia}</b><span>stories that went India → world · world → India</span></div>
+      <div class="kpi"><b>${Math.round(p.crossBorder.share)}%</b><span>of stories crossed a border <small>${ci(p.crossBorder.ci)} · n=${p.crossBorder.n}</small></span></div>
+      <div class="kpi"><b>${dur(p.crossBorder.medianMinutes)}</b><span>median time to reach another country <small>${p.crossBorder.medianCI ? dur(Math.round(p.crossBorder.medianCI[0])) + "–" + dur(Math.round(p.crossBorder.medianCI[1])) : ""}</small></span></div>
+      <div class="kpi"><b>${dur(p.national.medianMinutes)}</b><span>median time until three outlets in the origin country carry it <small>${p.national.medianCI ? dur(Math.round(p.national.medianCI[0])) + "–" + dur(Math.round(p.national.medianCI[1])) : ""} · n=${p.national.n}</small></span></div>
+      <div class="kpi"><b>${p.fairStories}</b><span>stories with a fair "first report" — they broke after every outlet was being tracked (${day(p.trackStart)})</span></div>
     </div>
     <div class="two">
-      <div class="panel"><h4>First to report</h4><div class="bars lb">${broke.map((o, k) => row(O[o.id].name, o.broke, mb, o.broke, O[o.id].color, k)).join("")}</div></div>
-      <div class="panel"><h4>Median delay behind the first report</h4><div class="bars lb">${lag.map((o, k) => row(O[o.id].name, o.medianLag, ml, dur(o.medianLag), "#9B8CFF", k)).join("")}</div></div>
+      <div class="panel"><h4>Who breaks the news — share of the stories it covered that it reported first</h4>
+        ${ranked.length ? `<div class="bars lb">${ranked.map((o, k) => row(O[o.id].name, wbar(o.breakRate, o.breakCI, 100, O[o.id].color), `${o.broke}/${o.covered}`, k, thin(o.solid))).join("")}</div>` : `<p class="note">Building up: this ranking only counts stories that broke after every outlet was being tracked. It fills in over the coming days.</p>`}</div>
+      <div class="panel"><h4>Median delay behind the first report</h4>
+        ${lag.length ? `<div class="bars lb">${lag.map((o, k) => row(O[o.id].name, wbar(o.medianLag, o.lagCI, ml, "#9B8CFF"), dur(Math.round(o.medianLag)), k, thin(o.solid))).join("")}</div>` : `<p class="note">Building up — see left.</p>`}</div>
     </div>
     <div class="two">
-      <div class="panel"><h4>How stories are framed</h4><div class="bars lb">${fr.map(([f, n], k) => row(f, n, mf, n, "#FFB547", k)).join("")}</div></div>
-      <div class="panel"><h4>Read this fairly</h4><p class="note">"First" means first in the feeds NewsTrail reads, not necessarily the first anywhere. Some outlets publish 200 headlines in their feed and others only 10, so outlets with longer feeds look faster until a few days of hourly history build up. Framing and tone come from a small, open word list — a signal, not a verdict.</p></div>
+      <div class="panel"><h4>How stories are framed</h4><div class="bars lb">${fr.map(([f, n], k) => row(f, `<div class="t"><i style="--w:${n / mf * 100}%;--c:#FFB547"></i></div>`, n, k)).join("")}</div></div>
+      <div class="panel"><h4>Read this fairly</h4><p class="note">"First" means first among the ${Object.keys(O).length} newsrooms NewsTrail reads, by each outlet's own publish time. A story's first report is the start of its burst (three newsrooms within six hours); earlier previews don't count. Only well-grouped stories (coherence ≥ 0.4) are used — about 94% of their first reports were correct in our hand audit. Bars show the estimate; the thin line is the 95% range. "Thin data" means too few stories for a firm claim.</p></div>
     </div>
   </div></section>`;
 }
@@ -211,28 +222,28 @@ async function compare() {
   const span = `${new Date(c.from).toLocaleDateString([], { day: "numeric", month: "short" })} – ${new Date(c.to).toLocaleDateString([], { day: "numeric", month: "short" })}`;
   const IN = c.countries.find(x => x.country === "India") || { top: [], abroad: 0 };
   const us = c.mirror.find(m => m.country === "United States");
-  const mx = Math.max(1, ...c.mirror.flatMap(m => [m.indiaAboutThem, m.themAboutIndia]));
+  const mx = Math.max(1, ...c.mirror.flatMap(m => [m.indiaAboutThem.value, m.themAboutIndia.value]));
   const heat = v => v == null ? "" : `background:rgba(255,181,71,${Math.min(.9, v / 50)})`;
   const ex = (list, empty) => list.length ? list.map(e => `<a class="tr" href="#/s/${e.id}"><span class="lag">${e.outlets} outlets</span><span class="ob">${e.countries.length} ${e.countries.length > 1 ? "countries" : "country"}</span><span class="h"><b>${esc(e.headline)}</b></span></a>`).join("") : `<p class="note">${empty}</p>`;
   app.innerHTML = `<section><div class="wrap">
     <div class="sh"><h2>Home vs world</h2><p>When each country's newsrooms look abroad, where do they look? ${span} · ${c.items.toLocaleString()} headlines.</p></div>
     <div class="kpis">
-      ${us ? `<div class="kpi"><b>${us.indiaAboutThem}%</b><span>of Indian newsrooms' foreign coverage is about the United States</span></div>
-      <div class="kpi"><b>${us.themAboutIndia}%</b><span>of US newsrooms' foreign coverage is about India</span></div>` : ""}
-      <div class="kpi"><b>${c.aboutIndia.carriedAbroad} of ${c.aboutIndia.stories}</b><span>traced stories about India were picked up by a newsroom outside India</span></div>
-      <div class="kpi"><b>${c.aboutElsewhereInIndia.carriedInIndia} of ${c.aboutElsewhereInIndia.stories}</b><span>traced stories about other countries were carried by Indian newsrooms</span></div>
+      ${us ? `<div class="kpi"><b>${us.indiaAboutThem.value}%</b><span>of Indian newsrooms' foreign coverage is about the United States <small>${ci(us.indiaAboutThem.ci)}</small></span></div>
+      <div class="kpi"><b>${us.themAboutIndia.value}%</b><span>of US newsrooms' foreign coverage is about India <small>${ci(us.themAboutIndia.ci)}</small></span></div>` : ""}
+      <div class="kpi"><b>${c.aboutIndia.carriedAbroad} of ${c.aboutIndia.stories}</b><span>well-grouped stories about India were picked up outside India <small>${ci(c.aboutIndia.ci)}</small></span></div>
+      <div class="kpi"><b>${c.aboutElsewhereInIndia.carriedInIndia} of ${c.aboutElsewhereInIndia.stories}</b><span>stories about other countries were carried by Indian newsrooms <small>${ci(c.aboutElsewhereInIndia.ci)}</small></span></div>
     </div>
     <div class="two">
       <div class="panel"><h4>The mirror: India about them vs them about India</h4>
-        <div class="mirror">${c.mirror.sort((a, b) => b.indiaAboutThem + b.themAboutIndia - a.indiaAboutThem - a.themAboutIndia).map((m, k) => `<div class="mr" style="--k:${k}">
-          <span class="l"><i style="--w:${m.indiaAboutThem / mx * 100}%"></i><em>${m.indiaAboutThem}%</em></span><b>${esc(m.country)}</b><span class="r"><i style="--w:${m.themAboutIndia / mx * 100}%"></i><em>${m.themAboutIndia}%</em></span></div>`).join("")}</div>
+        <div class="mirror">${c.mirror.sort((a, b) => b.indiaAboutThem.value + b.themAboutIndia.value - a.indiaAboutThem.value - a.themAboutIndia.value).map((m, k) => `<div class="mr" style="--k:${k}" title="India→${esc(m.country)} ${ci(m.indiaAboutThem.ci)} · ${esc(m.country)}→India ${ci(m.themAboutIndia.ci)}${m.ratio ? ` · ratio ${m.ratio}× (${m.ratioCI ? m.ratioCI[0] + "–" + m.ratioCI[1] + "×" : "range n/a"})` : ""}">
+          <span class="l"><i style="--w:${m.indiaAboutThem.value / mx * 100}%"></i><em>${m.indiaAboutThem.value}%</em></span><b>${esc(m.country)}${m.solid ? "" : " ·"}</b><span class="r"><i style="--w:${m.themAboutIndia.value / mx * 100}%"></i><em>${m.themAboutIndia.value}%</em></span></div>`).join("")}</div>
         <div class="mlegend"><span>← India's newsrooms about them</span><span>their newsrooms about India →</span></div>
-        <p class="note">Share of each side's <i>foreign</i> coverage, so it doesn't depend on how many home vs world headlines a feed carries.</p>
+        <p class="note">Share of each side's <i>foreign</i> coverage, so it doesn't depend on how many home vs world headlines a feed carries. Hover a row for its 95% range; "·" marks a thin sample.${us && us.ratio ? ` India → US vs US → India: <b>${us.ratio}×</b> (95% range ${us.ratioCI ? us.ratioCI[0] + "–" + us.ratioCI[1] + "×" : "n/a"}).` : ""}</p>
       </div>
-      <div class="panel"><h4>Where Indian newsrooms look abroad</h4><div class="bars lb">${IN.top.map((t, k) => `<div class="r" style="--k:${k}"><span>${esc(t.c)}</span><div class="t"><i style="--w:${t.share / Math.max(1, IN.top[0]?.share || 1) * 100}%;--c:#9B8CFF"></i></div><span>${t.share}%</span></div>`).join("")}</div></div>
+      <div class="panel"><h4>Where Indian newsrooms look abroad — % of their foreign coverage</h4><div class="bars lb">${IN.top.map((t, k) => `<div class="r" style="--k:${k}"><span>${esc(t.c)}</span>${wbar(t.value, t.ci, Math.max(1, (IN.top[0]?.ci || [0, 1])[1]), "#9B8CFF")}<span>${t.value}%</span></div>`).join("")}</div></div>
     </div>
     ${c.regions ? `<div class="panel" style="margin-top:20px"><h4>This week's hot zones — where ${c.regions[0].newsrooms} newsrooms pointed (each newsroom weighted equally)</h4>
-      <div class="bars lb">${c.regions.map((r, k) => `<div class="r" style="--k:${k}"><span>${esc(r.region)}</span><div class="t"><i style="--w:${r.share / c.regions[0].share * 100}%;--c:#FF5A4E"></i></div><span>${r.share}%</span></div>`).join("")}</div>
+      <div class="bars lb">${c.regions.map((r, k) => `<div class="r" style="--k:${k}"><span>${esc(r.region)}</span>${wbar(r.share, r.ci, Math.max(...c.regions.map(x => (x.ci || [0, x.share])[1])), "#FF5A4E")}<span>${r.share}%</span></div>`).join("")}</div>
       <p class="note">Hottest: ${c.regions.slice(0, 3).map(r => `${esc(r.region)} (${r.countries.slice(0, 2).map(x => esc(x.c)).join(", ")})`).join(" · ")}.</p></div>` : ""}
     <div class="panel" style="margin-top:20px"><h4>Who covers whom — % of each country's foreign coverage</h4>
       <div class="heatwrap"><table class="heat"><thead><tr><th>Newsrooms in ↓ · about →</th>${c.matrix.cols.map(x => `<th>${esc(x)}</th>`).join("")}</tr></thead>
@@ -249,17 +260,40 @@ async function compare() {
 }
 
 // ── method ────────────────────────────────────────────────────────────────────────────────────
-function about() {
+async function about() {
+  const [A, Hh] = await Promise.all([fetch("audit.json").then(r => r.ok ? r.json() : null).catch(() => null), get("health.json").catch(() => null)]);
+  const day = t => new Date(t).toLocaleDateString([], { day: "numeric", month: "short", year: "numeric" });
+  const risk = Hh ? Hh.feeds.filter(f => f.atRisk || !f.ok) : [];
   app.innerHTML = `<section><div class="wrap prose">
     <h2>How NewsTrail works</h2>
     <ul>
-      <li><b>Collect.</b> Once an hour, a GitHub Action reads the public RSS feeds of ${Object.keys(O).length} newsrooms and keeps each headline, its short summary, link and time for 7 days.</li>
-      <li><b>Group.</b> Headlines are compared word by word (TF-IDF similarity, headline words weighted double). Items that share rare headline words within 72 hours become one story — only stories carried by at least three outlets are shown.</li>
-      <li><b>Trace.</b> The earliest item is the first report. A story turns <i>national</i> when three outlets in the origin country carry it, and <i>international</i> when an outlet in another country does.</li>
-      <li><b>Compare.</b> Words used by only one outlet show its angle; words most outlets share show the consensus. A small open word list scores headline tone and tags frames (conflict, politics, economy, human, safety, justice).</li>
-      <li><b>Locate.</b> Place names in the headlines put the event on the map; each outlet sits at its newsroom.</li>
+      <li><b>Collect.</b> A GitHub Action reads the public RSS feeds of ${Object.keys(O).length} newsrooms in ${new Set(Object.values(O).map(o => o.country)).size} countries — their national section and their world section where they publish one — and keeps each headline, its short summary, link and publish time for 28 days.</li>
+      <li><b>Group.</b> Headlines are compared word by word (TF-IDF similarity, headline words weighted double). Items that share rare headline words within 72 hours become one story; a headline that doesn't match the rest of its story is split off. A story needs at least three newsrooms.</li>
+      <li><b>First report.</b> A story "breaks" at its first burst — three newsrooms within six hours. The first headline of that burst is the first report; earlier previews stay on the timeline as "before the news broke".</li>
+      <li><b>Confidence.</b> Every story gets a coherence score (how closely each headline matches the rest). Only stories scoring ≥ 0.4 feed the statistics; the rest are shown but labelled "loosely grouped".</li>
+      <li><b>Countries &amp; regions.</b> An open list of country names, demonyms, capitals and places tags what each headline is about. Hot zones give every newsroom one equal vote, so outlets with long feeds can't dominate.</li>
+      <li><b>Uncertainty.</b> Every share carries a 95% interval. Headlines about the same story aren't independent, so intervals come from resampling whole stories (a cluster bootstrap) — wider and more honest than treating headlines as coin flips. Numbers with too little data are marked "thin data".</li>
     </ul>
-    <h2>Sources</h2><div class="outl">${Object.values(O).map(o => `<span class="chip">${ob(o.id)} · ${esc(o.country)}</span>`).join("")}</div>
+    <h2>How accurate is it?</h2>
+    ${A ? `<p>We checked stories headline by headline — ${A.criterion.charAt(0).toLowerCase() + A.criterion.slice(1)}</p>
+      <div class="heatwrap"><table class="heat out"><thead><tr><th>Sample</th><th>Stories</th><th>Headlines grouped correctly</th><th>First report correct</th></tr></thead><tbody>
+      ${A.sets.flatMap(x => [["all", "all stories"], ["confident", "well-grouped (used in statistics)"]].map(([k, l]) => `<tr><th>${esc(x.name)} <small>${l}</small></th><td>${x[k].stories}</td><td>${x[k].headlineAccuracy}% <small>${ci(x[k].headlineCI)}</small></td><td>${x[k].firstReportAccuracy}% <small>${ci(x[k].firstReportCI)}</small></td></tr>`)).join("")}
+      </tbody></table></div>
+      <p class="note">Reviewed ${esc(A.reviewed)}. The tuning set was used to set the thresholds; the validation set was drawn afterwards from stories not seen during tuning. ${esc(A.note)} Known weaknesses: the same event is sometimes split into two stories, and very busy topics (an election, a war) can pull loosely related headlines together.</p>` : `<p class="note">Audit results load here.</p>`}
+    <h2>Timestamp reliability</h2>
+    <p>"First" depends on each outlet's own publish time. We checked every feed: all carry explicit time zones, and when a headline first appears in a feed its timestamp is almost never earlier than our previous visit (back-dating is rare and small). Feeds whose clocks looked wrong — future-dated items or missing dates — were not added.</p>
+    <h2>Data health</h2>
+    ${Hh ? `<p>Last collection ${ago(Hh.updated)}. GitHub runs the collector on a schedule but can delay it; 90% of gaps between runs are under <b>${Hh.gapP90Hours ?? "—"} hours</b>. A feed that only reaches back less than that can lose headlines between runs.</p>
+      ${risk.length ? `<p class="note">At risk right now: ${risk.map(f => `${esc(O[f.outlet]?.name || f.outlet)} (${f.sec}${f.ok ? `, ${f.depthHours}h deep` : ", unreachable"})`).join(", ")}.</p>` : `<p class="note">No feed currently at risk.</p>`}` : ""}
+    <h2>Open data</h2>
+    <p>Download this week's measurements (links, times, countries and scores — no article text): <a href="data/csv/stories.csv">stories.csv</a> · <a href="data/csv/coverage.csv">coverage.csv</a> · <a href="data/csv/headline-countries.csv">headline-countries.csv</a> · weekly archive: <a href="data/weeks/index.json">weeks/</a>. Code and method: <a href="https://github.com/mangipudiyash/newstrail">github.com/mangipudiyash/newstrail</a>.</p>
+    <h2>Corrections</h2>
+    <ul>
+      <li><b>29 Oct 2026</b> — An audit found that ~18% of first reports were previews or unrelated pieces. We added the burst rule, an origin check and the coherence threshold; statistics now use well-grouped stories only.</li>
+      <li><b>29 Oct 2026</b> — Added 17 newsrooms (Africa, Asia-Pacific, Middle East, Europe, Latin America and Indian regional papers). The "first to report" ranking restarted so every outlet is judged on the same stories.</li>
+      <li><b>27 Oct 2026</b> — CNN's RSS feed was found to carry ads and old local stories and was removed; Indian Express blocks automated readers and was replaced.</li>
+    </ul>
+    <h2>Sources</h2><div class="outl">${Object.values(O).sort((a, b) => a.country.localeCompare(b.country)).map(o => `<span class="chip">${ob(o.id)} · ${esc(o.country)}</span>`).join("")}</div>
     <h2>Fair use</h2><p>NewsTrail shows headlines and the short summaries outlets publish in their own feeds, always linked back to the original. No articles are copied. Visitors' browsers only load NewsTrail's own files — they never contact the newsrooms.</p>
   </div></section>`;
 }
@@ -273,7 +307,7 @@ async function route() {
     if (h.startsWith("/s/")) await story(h.slice(3));
     else if (h.startsWith("/patterns")) await patterns();
     else if (h.startsWith("/compare")) await compare();
-    else if (h.startsWith("/about")) about();
+    else if (h.startsWith("/about")) await about();
     else await home();
   } catch (e) { console.error(e); app.innerHTML = `<div class="wrap empty">That story has moved on — it's no longer in the 7-day window. <a href="#/">See what's spreading now →</a></div>`; }
 }
