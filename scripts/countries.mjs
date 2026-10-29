@@ -24,6 +24,7 @@ const C = {
   Kenya: `Kenya|Kenyan|Nairobi`, Sudan: `Sudan|Sudanese|Khartoum|Darfur`, Maldives: `Maldives|Maldivian`, Singapore: `Singapore|Singaporean`,
   Venezuela: `Venezuela|Venezuelan|Caracas|Maduro|Machado`, Serbia: `Serbia|Serbian|Belgrade|Vučić|Vucic`, Poland: `Poland|Polish|Warsaw`,
   Romania: `Romania|Romanian|Bucharest`, Uganda: `Uganda|Ugandan|Kampala`,
+  Congo: `Congo|Congolese|Brazzaville|Kinshasa|DRC`,
   Ireland: `Ireland|Irish|Dublin|Taoiseach|Cork|Galway`, "New Zealand": `New Zealand|Kiwi|Wellington|Auckland|Christchurch|Luxon`,
   Argentina: `Argentina|Argentine|Argentinian|Buenos Aires|Milei`, Uruguay: `Uruguay|Uruguayan|Montevideo`,
 };
@@ -46,7 +47,7 @@ export const REGION = {
   Europe: ["United Kingdom", "Ireland", "France", "Germany", "Italy", "Spain", "Ukraine", "Russia", "Serbia", "Poland", "Romania"],
   Americas: ["United States", "Canada", "Mexico", "Brazil", "Venezuela", "Argentina", "Uruguay"],
   "East Asia": ["China", "Hong Kong", "Japan", "South Korea", "North Korea", "Taiwan", "Myanmar", "Thailand", "Indonesia", "Singapore"],
-  Africa: ["South Africa", "Nigeria", "Kenya", "Sudan", "Uganda"],
+  Africa: ["South Africa", "Nigeria", "Kenya", "Sudan", "Uganda", "Congo"],
   Oceania: ["Australia", "New Zealand"],
 };
 export const regionOf = Object.fromEntries(Object.entries(REGION).flatMap(([r, cs]) => cs.map(c => [c, r])));
