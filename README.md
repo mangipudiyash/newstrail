@@ -2,7 +2,7 @@
 
 **Live:** https://mangipudiyash.github.io/newstrail/
 
-NewsTrail follows every story across 21 Indian and international newsrooms and answers four questions no single news site can:
+NewsTrail follows every story across 38 newsrooms in 19 countries and answers four questions no single news site can:
 
 1. **Where did it start?** Which outlet reported it first, and where the event happened.
 2. **How did it spread?** From the first report, to national coverage, to crossing borders, replayed on an animated world map.
@@ -11,12 +11,21 @@ NewsTrail follows every story across 21 Indian and international newsrooms and a
 
 Across all stories, the **Patterns** page shows who breaks news first, how far behind each outlet runs, how often stories cross borders, and how long that takes.
 
+## Statistical rigour
+
+- **Accuracy is audited by hand.** We check stories headline by headline, with separate tuning and validation sets. Results are published on the site's Method page and in [`audit/`](audit/README.md).
+- **Every share has a 95% interval.** Headlines about one story aren't independent, so intervals resample whole stories (a cluster bootstrap). Numbers with too little data are marked *thin data*.
+- **The first report is the start of the burst** (three newsrooms within six hours), so previews and background pieces aren't credited as breaking the news.
+- **Rankings are fair.** "First to report" only counts stories that broke after every outlet was being tracked, and only well-grouped stories (coherence ≥ 0.4) feed the statistics.
+- **Hot zones** give every newsroom one equal vote, so outlets with long feeds can't dominate.
+- **Open data.** Weekly CSVs are published (links, times and measurements only), and every completed week is archived in [`archive/`](archive/).
+
 ## How it works
 
 ```
 every hour (GitHub Actions)
-  collect.mjs  → reads the home + world RSS feeds of 21 newsrooms → site/data/items.json   (rolling 7-day history, kept in the Actions cache)
-  build.mjs    → groups headlines into stories → site/data/stories.json, s/<id>.json, patterns.json
+  collect.mjs  → reads the home + world RSS feeds of 38 newsrooms → site/data/items.json   (28-day history, kept in the Actions cache)
+  build.mjs    → engine.mjs groups headlines into stories; stats.mjs adds intervals → stories, patterns, compare, weeks/, csv/
   deploy       → GitHub Pages serves site/ as static files
 ```
 
@@ -29,7 +38,24 @@ No servers, no database, no paid APIs. Visitors' browsers only load NewsTrail's 
 
 ## Sources
 
-NDTV · Times of India · Hindustan Times · The Hindu · India Today · Indian Express · News18 · Economic Times · Zee News · Mint · BBC · The Guardian · Sky News · Al Jazeera · New York Times · CNN · NPR · Fox News · DW · France 24 · ABC Australia · South China Morning Post
+**India:** NDTV · Times of India · Hindustan Times · The Hindu · India Today · Scroll.in · News18 · Economic Times · Zee News · Mint · Telangana Today · Mid-day · Free Press Journal · Greater Kashmir · Sentinel Assam  
+**United States:** New York Times · NPR · Fox News · PBS NewsHour  
+**United Kingdom:** BBC · The Guardian · Sky News  
+**France:** France 24 · Euronews  
+**Argentina:** Buenos Aires Times  
+**Australia:** ABC Australia  
+**Germany:** DW  
+**Hong Kong:** South China Morning Post  
+**Ireland:** Irish Times  
+**Israel:** Times of Israel  
+**Japan:** Japan Times  
+**Kenya:** Nation (Kenya)  
+**New Zealand:** RNZ  
+**Qatar:** Al Jazeera  
+**Saudi Arabia:** Arab News  
+**Singapore:** Straits Times  
+**South Korea:** Korea Herald  
+**Uruguay:** MercoPress
 
 To add an outlet, add one line to `scripts/outlets.mjs`.
 
