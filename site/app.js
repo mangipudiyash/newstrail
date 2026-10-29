@@ -10,7 +10,7 @@ const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 // ── formatting ────────────────────────────────────────────────────────────────────────────────
 const ago = t => { const m = Math.round((Date.now() - t) / 60e3); return m < 60 ? `${Math.max(1, m)}m ago` : m < 1440 ? `${Math.round(m / 60)}h ago` : `${Math.round(m / 1440)}d ago`; };
-const dur = v => { if (v == null) return "—"; const m = Math.round(v); return m < 1 ? "same minute" : m < 60 ? `${m}m` : m < 1440 ? `${Math.floor(m / 60)}h ${m % 60 ? (m % 60) + "m" : ""}`.trim() : `${Math.floor(m / 1440)}d ${Math.round((m % 1440) / 60)}h`;; };
+const dur = v => { if (v == null) return "—"; const m = Math.round(v); return m < 1 ? "same minute" : m < 60 ? `${m}m` : m < 1440 ? `${Math.floor(m / 60)}h ${m % 60 ? (m % 60) + "m" : ""}`.trim() : (Math.round((m % 1440) / 60) ? `${Math.floor(m / 1440)}d ${Math.round((m % 1440) / 60)}h` : `${Math.floor(m / 1440)}d`);; };
 const clock = t => new Date(t).toLocaleString([], { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
 const ob = id => `<span class="ob" style="--c:${O[id]?.color || "#888"}"><i></i>${esc(O[id]?.name || id)}</span>`;
 const scopeOf = (id, originId) => id === originId ? "origin" : O[id].country === O[originId].country ? "national" : "international";
@@ -305,12 +305,13 @@ async function about() {
 async function route() {
   heroStop(); scrollTo(0, 0); document.title = "NewsTrail — watch the news travel";
   const h = location.hash.slice(1) || "/";
-  document.querySelectorAll("nav a").forEach(a => a.classList.toggle("on", a.dataset.r === (h.startsWith("/patterns") ? "patterns" : h.startsWith("/week") ? "week" : h.startsWith("/compare") ? "compare" : h.startsWith("/about") ? "about" : "home")));
+  document.querySelectorAll("nav a").forEach(a => a.classList.toggle("on", a.dataset.r === (h.startsWith("/patterns") ? "patterns" : h.startsWith("/week") ? "week" : h.startsWith("/vs") ? "vs" : h.startsWith("/compare") ? "compare" : h.startsWith("/about") ? "about" : "home")));
   try {
     if (h.startsWith("/s/")) await story(h.slice(3));
     else if (h.startsWith("/patterns")) await patterns();
     else if (h.startsWith("/compare")) await compare();
     else if (h.startsWith("/week")) await week(h.split("/")[2]);
+    else if (h.startsWith("/vs")) await versus(h.split("/")[2], h.split("/")[3]);
     else if (h.startsWith("/about")) await about();
     else await home();
   } catch (e) { console.error(e); app.innerHTML = `<div class="wrap empty">That story has moved on — it's no longer in the 7-day window. <a href="#/">See what's spreading now →</a></div>`; }
