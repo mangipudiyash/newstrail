@@ -1,0 +1,39 @@
+name: Heartbeat
+
+# GitHub delays scheduled jobs on free accounts (our 20-minute schedule ran only every 4–5 hours).
+# This job keeps itself alive: it starts an update every 20 minutes for ~5.5 hours, then starts the next heartbeat.
+# The hourly schedule below only restarts the loop if it ever stops. Free for public repositories.
+
+on:
+  schedule:
+    - cron: "13 * * * *"
+  workflow_dispatch:
+
+permissions:
+  actions: write          # to start the update workflow and the next heartbeat
+
+concurrency:
+  group: heartbeat
+  cancel-in-progress: false
+
+jobs:
+  beat:
+    runs-on: ubuntu-latest
+    timeout-minutes: 345
+    steps:
+      - name: Start an update every 20 minutes
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          end=$(( $(date +%s) + 330 * 60 ))
+          while [ "$(date +%s)" -lt "$end" ]; do
+            gh workflow run update.yml --repo "$REPO" --ref main && echo "update started $(date -u +%H:%M)" || echo "could not start update"
+            sleep 1200
+          done
+      - name: Hand over to the next heartbeat
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: gh workflow run heartbeat.yml --repo "$REPO" --ref main

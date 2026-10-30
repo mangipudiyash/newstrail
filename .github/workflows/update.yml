@@ -2,7 +2,7 @@ name: Update NewsTrail
 
 on:
   schedule:
-    - cron: "7,27,47 * * * *"   # every 20 minutes — GitHub often delays scheduled runs, so we ask often
+    - cron: "37 * * * *"        # backup only — the Heartbeat workflow starts a run every 20 minutes
   workflow_dispatch:            # "Run workflow" button
   push:
     branches: [main]
