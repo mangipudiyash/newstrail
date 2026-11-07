@@ -20,7 +20,7 @@ both each few more most other some such only own same so too very just also new 
 watch video photos explained report reports amid why how what first big top day week year years one two three per cent percent vs via
 make makes made get gets take takes set sets back now still out up down off around across amid least near amid while within without`.split(/\s+/));
 const stem = w => w.length > 5 ? w.replace(/(ings|ing|ed|es|s)$/, "") : w.length > 3 ? w.replace(/s$/, "") : w;
-const terms = s => (s.toLowerCase().replace(/[’']s\b/g, "").match(/[\p{L}\p{N}][\p{L}\p{N}\-.]*[\p{L}\p{N}]|\p{L}/gu) || [])
+export const terms = s => (s.toLowerCase().replace(/[’']s\b/g, "").match(/[\p{L}\p{N}][\p{L}\p{N}\-.]*[\p{L}\p{N}]|\p{L}/gu) || [])
   .map(w => w.replace(/\./g, "")).filter(w => w.length > 2 && !STOP.has(w) && !/^\d{1,2}$/.test(w)).map(stem);
 const cos = (a, b) => { let s = 0; const [x, y] = a.size < b.size ? [a, b] : [b, a]; for (const [w, v] of x) { const u = y.get(w); if (u) s += v * u; } return s; };
 

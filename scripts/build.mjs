@@ -1,10 +1,11 @@
 // Step 2 — build: group headlines from different outlets into stories, then measure how news moves between newsrooms.
 // One function, analyze(), runs on any time window: the current 7 days for the site, and every completed week for the archive.
 // Every share comes with a 95% interval and its sample size; numbers with too little data are flagged, not hidden.
-// Writes site/data/stories.json, s/<id>.json, patterns.json, compare.json, weeks/<week>.json, csv/*.csv
+// Writes site/data/stories.json, s/<id>.json, patterns.json, compare.json, attention.json, weeks/<week>.json, csv/*.csv
 import { readFile, writeFile, mkdir, rm, readdir } from "node:fs/promises";
 import { OUTLETS, byId } from "./outlets.mjs";
 import { analyze as run, about } from "./engine.mjs";
+import { attentionFor } from "./attention-match.mjs";
 
 const DATA = new URL("../site/data/", import.meta.url);
 const raw = JSON.parse(await readFile(new URL("items.json", DATA), "utf8")), updated = raw.updated;
@@ -12,17 +13,21 @@ const ALL = raw.items.filter(i => byId[i.outlet]).sort((a, b) => a.t - b.t);
 const TRACK_START = raw.trackStart ?? Math.min(...ALL.map(i => i.seen));      // when hourly collection began
 const H = 3600e3, D = 24 * H;
 const analyze = (start, end, opts = {}) => run(ALL, TRACK_START, start, end, { updated, ...opts });
+// searches and Wikipedia reading collected by attention.mjs (missing on a fresh checkout — the site then simply has no attention data)
+const ATT = await readFile(new URL("../cache/attention-raw.json", import.meta.url), "utf8").then(JSON.parse).catch(() => null);
 
 // ── current window: the last 7 days ─────────────────────────────────────────────────────────────────────
 const latest = Math.max(...ALL.map(i => i.t));
 const cur = analyze(latest - 7 * D, latest + 1);
+const att = ATT && attentionFor(cur.stories, ATT, latest - 7 * D, latest + 1);
 await rm(new URL("s/", DATA), { recursive: true, force: true });
 await mkdir(new URL("s/", DATA), { recursive: true });
 const TOP = cur.stories.slice(0, 400);                  // every story gets a page (the audit samples from all of them)
-for (const s of TOP) await writeFile(new URL(`s/${s.id}.json`, DATA), JSON.stringify(s));
+for (const s of TOP) await writeFile(new URL(`s/${s.id}.json`, DATA), JSON.stringify({ ...s, attention: att?.stories[s.id] }));
 await writeFile(new URL("stories.json", DATA), JSON.stringify({ updated, stories: TOP.map(({ coverage, ...s }) => ({ ...s, trail: coverage.map(c => [c.outlet, c.lag]) })) }));
 await writeFile(new URL("patterns.json", DATA), JSON.stringify(cur.patterns));
 await writeFile(new URL("compare.json", DATA), JSON.stringify(cur.compare));
+if (att) await writeFile(new URL("attention.json", DATA), JSON.stringify({ updated, ...att.findings }));
 await writeFile(new URL("outlets.json", DATA), JSON.stringify(OUTLETS.map(({ feeds, ...o }) => o)));
 // head-to-head: a compact copy of every story's coverage, so any two outlets can be compared in the browser.
 // cov rows: [outlet, minutes after first report, tone, frames, headline]; precursor ("before the news broke") rows are left out.
@@ -59,7 +64,8 @@ for (let w = monday(earliest + 3 * D) + 7 * D; w + 7 * D <= latest; w += 7 * D) 
   const r = analyze(w, w + 7 * D, { quiet: true });
   await writeFile(new URL(`weeks/${id}.json`, DATA), JSON.stringify({ week: id, from: w, to: w + 7 * D, partial: w < firstRun,
     patterns: { ...r.patterns, outlets: r.patterns.outlets }, compare: { ...r.compare, outlets: undefined, countries: undefined },
-    top: r.stories.slice(0, 10).map(s => ({ id: s.id, headline: s.headline, outlets: s.outlets, countries: s.countries, first: s.first, origin: s.origin.outlet })) }));
+    top: r.stories.slice(0, 10).map(s => ({ id: s.id, headline: s.headline, outlets: s.outlets, countries: s.countries, first: s.first, origin: s.origin.outlet })),
+    attention: ATT ? attentionFor(r.stories, ATT, w, w + 7 * D).findings : undefined }));
   have.add(id); console.log("archived", id, w < TRACK_START ? "(partial: began before tracking)" : "");
 }
 await writeFile(new URL("weeks/index.json", DATA), JSON.stringify([...have].sort()));
