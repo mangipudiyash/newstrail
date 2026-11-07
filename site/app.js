@@ -11,6 +11,7 @@ const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
 // ── formatting ────────────────────────────────────────────────────────────────────────────────
 const ago = t => { const m = Math.round((Date.now() - t) / 60e3); return m < 60 ? `${Math.max(1, m)}m ago` : m < 1440 ? `${Math.round(m / 60)}h ago` : `${Math.round(m / 1440)}d ago`; };
 const dur = v => { if (v == null) return "—"; const m = Math.round(v); return m < 1 ? "same minute" : m < 60 ? `${m}m` : m < 1440 ? `${Math.floor(m / 60)}h ${m % 60 ? (m % 60) + "m" : ""}`.trim() : (Math.round((m % 1440) / 60) ? `${Math.floor(m / 1440)}d ${Math.round((m % 1440) / 60)}h` : `${Math.floor(m / 1440)}d`);; };
+const big = n => n >= 1e6 ? (n / 1e6).toFixed(1) + "M" : n >= 1e3 ? Math.round(n / 1e3) + "K" : String(n);
 const clock = t => new Date(t).toLocaleString([], { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
 const ob = id => `<span class="ob" style="--c:${O[id]?.color || "#888"}"><i></i>${esc(O[id]?.name || id)}</span>`;
 const scopeOf = (id, originId) => id === originId ? "origin" : O[id].country === O[originId].country ? "national" : "international";
@@ -160,6 +161,10 @@ async function story(id) {
         <h4>How it was framed</h4>
         <div class="bars">${s.frames.slice(0, 5).map((f, k) => `<div class="r" style="--k:${k}"><span>${f.f}</span><div class="t"><i style="--w:${f.n / s.outlets * 100}%"></i></div><span>${f.n}</span></div>`).join("") || `<span class="note">No strong framing signals.</span>`}</div>
       </div>
+      ${s.attention ? `<h4>What people looked up</h4><div class="steps">
+        ${s.attention.articles.length ? `<div class="step" style="--c:#FFB547"><div class="b"></div><div><b>${big(s.attention.wikiViews)} Wikipedia views</b><span>${s.attention.articles.map(a => `${esc(a.title)} ${big(a.views)}`).join(" · ")}</span></div></div>` : ""}
+        ${s.attention.searchedIn.length ? `<div class="step" style="--c:#2DD4BF"><div class="b"></div><div><b>Trending search in ${s.attention.searchedIn.length} ${s.attention.searchedIn.length > 1 ? "countries" : "country"}</b><span>${s.attention.searches.map(t => `“${esc(t.q)}” ${esc(t.geo)}${t.traffic ? " " + big(t.traffic) + "+" : ""}`).join(" · ")}</span></div></div>` : ""}
+      </div>` : ""}
     </div>
     ${pre.length ? `<section><div class="sh"><h2>Before the news broke</h2><p>Earlier pieces on the same subject — previews and background. The first report is the start of the burst: the first of three newsrooms within six hours.</p></div>
       <div class="trail">${pre.map(c => `<a class="tr" href="${esc(c.link)}" target="_blank" rel="noopener"><span class="lag">−${dur(-c.lag)}</span>${ob(c.outlet)}<span class="h"><b>${esc(c.title)}</b></span></a>`).join("")}</div></section>` : ""}
@@ -262,6 +267,37 @@ async function compare() {
   </div></section>`;
 }
 
+// ── covered vs looked up ──────────────────────────────────────────────────────────────────────
+async function attention() {
+  const a = await get("attention.json");
+  const day = t => new Date(t).toLocaleDateString([], { day: "numeric", month: "short" });
+  const row = (x, lead) => `<a class="tr at" href="#/s/${x.id}"><span class="lag">${lead}</span><span class="h"><b>${esc(x.headline)}</b><small>${[`${x.outlets} outlets in ${x.countries} ${x.countries > 1 ? "countries" : "country"}`, x.top ? `Wikipedia: ${esc(x.top)}` : "", x.ignoredAtHome ? `searched in ${x.ignoredAtHome.map(esc).join(", ")} — no newsroom there covered it` : x.searchedIn?.length ? `searched in ${x.searchedIn.map(esc).join(", ")}` : ""].filter(Boolean).join(" · ")}</small></span></a>`;
+  const list = (xs, lead, empty) => xs.length ? `<div class="trail">${xs.map(x => row(x, lead(x))).join("")}</div>` : `<p class="note">${empty}</p>`;
+  const cs = a.countries.filter(c => c.searches >= 1);
+  const searchNote = a.trendFrom > a.from + 864e5 ? ` Search tracking began ${day(a.trendFrom)}, so search numbers are still building up.` : "";
+  app.innerHTML = `<section><div class="wrap">
+    <div class="sh"><h2>Covered vs looked up</h2><p>Newsrooms decide what gets covered. What people search for and read on Wikipedia shows what they went looking for. ${day(a.from)}–${day(a.to)} · ${a.searches} trending searches in ${cs.length} countries · ${a.wikiDays} days of Wikipedia reading.${searchNote}</p></div>
+    <div class="kpis">
+      ${a.rho != null ? `<div class="kpi"><b>${a.rho.toFixed(2)}</b><span>how well the number of newsrooms covering a story predicts how much it was read on Wikipedia (0 = not at all, 1 = perfectly) <small>${a.rhoCI ? `95% range ${a.rhoCI[0].toFixed(2)} to ${a.rhoCI[1].toFixed(2)} · ` : ""}rank correlation, n=${a.withSignal.n}</small></span></div>` : ""}
+      <div class="kpi"><b>${a.mostCovered.k} of ${a.mostCovered.n}</b><span>of the most-covered stories set off a search trend or a Wikipedia spike <small>${ci(a.mostCovered.ci)}</small></span></div>
+      <div class="kpi"><b>${a.withSignal.share}%</b><span>of all well-grouped stories did <small>${a.withSignal.k} of ${a.withSignal.n} · ${ci(a.withSignal.ci)}</small></span></div>
+    </div>
+    <div class="two">
+      <div class="panel"><h4>Most read on Wikipedia</h4>${list(a.mostRead, x => big(x.wikiViews), "No Wikipedia spike matched a story yet.")}</div>
+      <div class="panel"><h4>Searched in the most countries</h4>${list(a.mostSearched, x => `${x.searchedIn.length} ${x.searchedIn.length > 1 ? "countries" : "country"}`, "No trending search matched a story yet.")}</div>
+    </div>
+    <div class="two">
+      <div class="panel"><h4>Covered everywhere, looked up by few</h4><p class="note">Among the most-covered stories, those that set off no search trend and no Wikipedia spike.</p>${list(a.coveredNotSought, x => `${x.outlets} outlets`, "Every heavily covered story drew attention.")}</div>
+      <div class="panel"><h4>Searched at home, skipped by home newsrooms</h4><p class="note">Trending in a country whose newsrooms (of those NewsTrail reads) didn't cover it.</p>${list(a.soughtNotCovered, x => x.ignoredAtHome.join(", "), "None yet.")}</div>
+    </div>
+    ${cs.length ? `<div class="panel" style="margin-top:20px"><h4>By country — how many trending searches were about a story NewsTrail tracked</h4>
+      <div class="heatwrap"><table class="heat out"><thead><tr><th>Country</th><th>Trending searches</th><th>About a tracked story</th><th>…covered by that country's newsrooms</th></tr></thead>
+      <tbody>${cs.map(c => `<tr><th>${esc(c.country)}</th><td>${c.searches}</td><td>${c.matched ? `${c.share}% <small>${ci(c.ci)}</small>` : "0"}</td><td>${c.matched ? `${c.homeCovered}% <small>${ci(c.homeCI)} · n=${c.matched}</small>` : "—"}</td></tr>`).join("")}</tbody></table></div>
+      <p class="note">Most trending searches are sport, TV and local events that never become cross-border news stories, so low shares are expected. Searches in other languages (Hindi, Arabic, Japanese…) can't yet be matched to English headlines.</p></div>` : ""}
+    <div class="panel" style="margin-top:20px"><h4>Read this fairly</h4><p class="note">These are signals of attention, not audience counts. <b>Searches:</b> Google Trends' public "trending now" feed for each newsroom country, checked every run — a search appears only when it suddenly takes off, with Google's rough traffic band. <b>Reading:</b> daily views of the 400 most-read English Wikipedia articles (Wikimedia's public API); an article counts only on a day it ran at least 3× its usual views. A search or article is linked to a story only when Google linked it to one of the story's own articles, or when its words all appear in the story's headlines and are rare that week; each counts for one story at most. Strict matching misses some real links (a story with no match may still have been widely read), so the shares are lower bounds. Only well-grouped stories are counted.</p></div>
+  </div></section>`;
+}
+
 // ── method ────────────────────────────────────────────────────────────────────────────────────
 async function about() {
   const [A, Hh] = await Promise.all([fetch("audit.json").then(r => r.ok ? r.json() : null).catch(() => null), get("health.json").catch(() => null)]);
@@ -275,6 +311,7 @@ async function about() {
       <li><b>First report.</b> A story "breaks" at its first burst — three newsrooms within six hours. The first headline of that burst is the first report; earlier previews stay on the timeline as "before the news broke".</li>
       <li><b>Confidence.</b> Every story gets a coherence score (how closely each headline matches the rest). Only stories scoring ≥ 0.4 feed the statistics; the rest are shown but labelled "loosely grouped".</li>
       <li><b>Countries &amp; regions.</b> An open list of country names, demonyms, capitals and places tags what each headline is about. Hot zones give every newsroom one equal vote, so outlets with long feeds can't dominate.</li>
+      <li><b>Attention.</b> Coverage is what newsrooms chose; attention is what people looked for. NewsTrail also reads Google Trends' trending searches in every newsroom country and Wikipedia's most-read articles, and links them to stories with strict word and link matching — see <a href="#/attention">Covered vs looked up</a>.</li>
       <li><b>Uncertainty.</b> Every share carries a 95% interval. Headlines about the same story aren't independent, so intervals come from resampling whole stories (a cluster bootstrap) — wider and more honest than treating headlines as coin flips. Numbers with too little data are marked "thin data".</li>
     </ul>
     <h2>How accurate is it?</h2>
@@ -305,11 +342,12 @@ async function about() {
 async function route() {
   heroStop(); scrollTo(0, 0); document.title = "NewsTrail — watch the news travel";
   const h = location.hash.slice(1) || "/";
-  document.querySelectorAll("nav a").forEach(a => a.classList.toggle("on", a.dataset.r === (h.startsWith("/patterns") ? "patterns" : h.startsWith("/week") ? "week" : h.startsWith("/vs") ? "vs" : h.startsWith("/compare") ? "compare" : h.startsWith("/about") ? "about" : "home")));
+  document.querySelectorAll("nav a").forEach(a => a.classList.toggle("on", a.dataset.r === (h.startsWith("/patterns") ? "patterns" : h.startsWith("/week") ? "week" : h.startsWith("/vs") ? "vs" : h.startsWith("/compare") ? "compare" : h.startsWith("/attention") ? "attention" : h.startsWith("/about") ? "about" : "home")));
   try {
     if (h.startsWith("/s/")) await story(h.slice(3));
     else if (h.startsWith("/patterns")) await patterns();
     else if (h.startsWith("/compare")) await compare();
+    else if (h.startsWith("/attention")) await attention();
     else if (h.startsWith("/week")) await week(h.split("/")[2]);
     else if (h.startsWith("/vs")) await versus(h.split("/")[2], h.split("/")[3]);
     else if (h.startsWith("/about")) await about();
