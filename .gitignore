@@ -1,0 +1,6 @@
+# generated hourly by the workflow — not committed
+site/data/
+node_modules/
+.DS_Store
+.claude/
+cache/
