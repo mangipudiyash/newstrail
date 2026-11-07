@@ -40,8 +40,19 @@ jobs:
       - name: Restore weekly archive
         run: mkdir -p site/data/weeks && cp archive/weeks/*.json site/data/weeks/ 2>/dev/null || true
 
+      # what people searched and read — kept in its own cache so the headline history above is never affected
+      - name: Restore attention signals
+        uses: actions/cache/restore@v4
+        with:
+          path: cache/attention-raw.json
+          key: newstrail-attention-${{ github.run_id }}
+          restore-keys: newstrail-attention-
+
       - name: Collect headlines
         run: node scripts/collect.mjs
+      - name: Collect attention (Google Trends, Wikipedia)
+        run: node scripts/attention.mjs || echo "attention sources unavailable this run — carrying on"
+        continue-on-error: true
       - name: Build stories, patterns and statistics
         run: node scripts/build.mjs
 
@@ -50,6 +61,12 @@ jobs:
         with:
           path: site/data/items.json
           key: newstrail-items-${{ github.run_id }}
+      - name: Save attention signals
+        if: hashFiles('cache/attention-raw.json') != ''
+        uses: actions/cache/save@v4
+        with:
+          path: cache/attention-raw.json
+          key: newstrail-attention-${{ github.run_id }}
 
       - name: Archive completed weeks
         run: |
